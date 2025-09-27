@@ -1,0 +1,90 @@
+@startuml Honeypot Architecture
+!theme aws-orange
+title AWS Honeypot Architecture - GMU AIT670 Project
+
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v15.0/dist
+!includeurl AWSPuml/AWSCommon.puml
+!includeurl AWSPuml/NetworkingAndContentDelivery/VPC.puml
+!includeurl AWSPuml/SecurityIdentityAndCompliance/IAM.puml
+!includeurl AWSPuml/Compute/EC2.puml
+!includeurl AWSPuml/SecurityIdentityAndCompliance/CloudFormation.puml
+!includeurl AWSPuml/ManagementAndGovernance/CloudWatch.puml
+
+package "AWS Cloud" {
+    VPC(vpc, "GMU Honeypot VPC", "10.0.0.0/16")
+    
+    package "Public Subnet" {
+        EC2(ec2, "EC2 Instance", "Amazon Linux 2\n44.222.200.1")
+        
+        package "Honeypot Services" {
+            component "Cowrie SSH Honeypot" as cowrie {
+                [Port 2222] as p2222
+                [Fake Filesystem] as honeyfs
+                [Session Logs] as logs
+                [Command Capture] as commands
+            }
+            
+            component "System Services" as system {
+                [SSH (Port 22)] as p22
+                [Python 3.8 Env] as python
+                [Log Rotation] as logrotate
+            }
+        }
+    }
+    
+    CloudFormation(cf, "CloudFormation", "Infrastructure as Code")
+    CloudWatch(cw, "CloudWatch", "Log Monitoring")
+    IAM(iam, "Security Groups", "Network ACL")
+}
+
+package "Internet" {
+    actor "Attackers" as attackers
+    actor "Security Researchers" as researchers
+    actor "Automated Bots" as bots
+}
+
+package "Team Access" {
+    actor "Team Members" as team
+    component "WSL Environment" as wsl {
+        [SSH Client] as ssh
+        [VS Code] as vscode
+        [Private Keys] as keys
+    }
+}
+
+' Connections
+attackers --> p2222 : "Malicious SSH\nAttempts"
+researchers --> p2222 : "Penetration\nTesting"
+bots --> p2222 : "Automated\nScanning"
+
+team --> p22 : "Administrative\nAccess"
+team --> wsl
+wsl --> keys
+ssh --> ec2
+
+p2222 --> honeyfs : "Fake Environment"
+p2222 --> logs : "Capture Activity"
+p2222 --> commands : "Log Commands"
+
+ec2 --> cw : "Send Logs"
+cf --> ec2 : "Deploy & Configure"
+iam --> ec2 : "Security Rules"
+
+note right of cowrie
+  Cowrie captures:
+  • Login attempts
+  • Commands executed
+  • File downloads
+  • Session recordings
+  • Network connections
+end note
+
+note left of honeyfs
+  Fake filesystem contains:
+  • Realistic directory structure
+  • Fake sensitive files
+  • Believable user accounts
+  • Decoy applications
+end note
+
+@enduml

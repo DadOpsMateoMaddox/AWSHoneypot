@@ -1,0 +1,108 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'GMU AIT512 Honeypot Infrastructure'
+
+Parameters:
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: EC2 Key Pair for SSH access
+  TeamIPRange:
+    Type: String
+    Default: '0.0.0.0/0'
+    Description: IP range for team management access
+
+Resources:
+  HoneypotSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: gmu-honeypot-sg
+      GroupDescription: Security group for GMU honeypot
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 2222
+          ToPort: 2222
+          CidrIp: 0.0.0.0/0
+          Description: SSH Honeypot
+        - IpProtocol: tcp
+          FromPort: 2223
+          ToPort: 2223
+          CidrIp: 0.0.0.0/0
+          Description: Telnet Honeypot
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref TeamIPRange
+          Description: Management SSH
+      Tags:
+        - Key: Name
+          Value: GMU-Honeypot-SG
+        - Key: Project
+          Value: AIT512
+
+  HoneypotInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0c02fb55956c7d316
+      InstanceType: t3.micro
+      KeyName: !Ref KeyPairName
+      SecurityGroupIds:
+        - !Ref HoneypotSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          apt-get update -y
+          apt-get install -y python3 python3-pip git
+          
+          # Install Cowrie
+          cd /opt
+          git clone https://github.com/cowrie/cowrie.git
+          cd cowrie
+          pip3 install -r requirements.txt
+          
+          # Configure Cowrie with believable hostname
+          cp etc/cowrie.cfg.dist etc/cowrie.cfg
+          sed -i 's/hostname = svr04/hostname = web-prod-01/' etc/cowrie.cfg
+          
+          # Create believable filesystem
+          mkdir -p honeyfs/home/admin/{Documents,Downloads}
+          mkdir -p honeyfs/var/www/html
+          mkdir -p honeyfs/opt/company-app
+          
+          # Add fake sensitive files
+          cat > honeyfs/home/admin/Documents/passwords.txt << 'EOFPASS'
+          # Company Credentials
+          admin:P@ssw0rd123
+          database:mysql_admin_2024
+          EOFPASS
+          
+          cat > honeyfs/opt/company-app/config.json << 'EOFCONF'
+          {
+            "database": {
+              "host": "10.0.1.100",
+              "password": "DbP@ss2024!"
+            },
+            "api_keys": {
+              "stripe": "sk_live_51234567890"
+            }
+          }
+          EOFCONF
+          
+          # Create cowrie user and start
+          useradd -r -s /bin/false cowrie
+          chown -R cowrie:cowrie /opt/cowrie
+          sudo -u cowrie /opt/cowrie/bin/cowrie start
+      Tags:
+        - Key: Name
+          Value: GMU-Honeypot-Cowrie
+        - Key: Project
+          Value: AIT512
+
+Outputs:
+  HoneypotPublicIP:
+    Description: Public IP of honeypot
+    Value: !GetAtt HoneypotInstance.PublicIp
+  SSHCommand:
+    Description: SSH command to connect to honeypot
+    Value: !Sub 'ssh -p 2222 root@${HoneypotInstance.PublicIp}'
+  ManagementSSH:
+    Description: Management SSH command
+    Value: !Sub 'ssh -i your-key.pem ubuntu@${HoneypotInstance.PublicIp}'
