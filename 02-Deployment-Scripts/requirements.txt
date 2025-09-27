@@ -1,0 +1,6 @@
+# Discord Honeypot Monitor Requirements
+# Install with: pip install -r requirements.txt
+
+requests>=2.31.0
+python-dateutil>=2.8.2
+psutil>=5.9.0

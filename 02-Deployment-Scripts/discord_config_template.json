@@ -1,0 +1,32 @@
+{
+  "discord_webhook_url": "REPLACE_WITH_YOUR_WEBHOOK_URL",
+  "cowrie_log_path": "/opt/cowrie/var/log/cowrie/cowrie.json",
+  "monitoring_interval": 5,
+  "alert_levels": {
+    "login_success": true,
+    "login_failed": false,
+    "command_executed": true,
+    "file_upload": true,
+    "file_download": true,
+    "session_start": false,
+    "session_end": false
+  },
+  "interesting_commands": [
+    "wget", "curl", "nc", "netcat", "python", "perl", "ruby",
+    "bash", "sh", "powershell", "cmd", "sudo", "su", "passwd",
+    "cat /etc/passwd", "cat /etc/shadow", "whoami", "id",
+    "uname", "ps", "netstat", "ss", "lsof", "nmap", "masscan",
+    "rm -rf", "chmod", "chown", "kill", "killall", "pkill",
+    "iptables", "firewall", "systemctl", "service", "crontab",
+    "history", "last", "w", "who", "uptime", "df", "mount",
+    "tar", "zip", "unzip", "gunzip", "ssh", "scp", "rsync"
+  ],
+  "max_message_length": 1900,
+  "rate_limit_delay": 1,
+  "high_priority_ips": [],
+  "ignored_ips": [],
+  "notification_channels": {
+    "general": "REPLACE_WITH_GENERAL_WEBHOOK_URL",
+    "critical": "REPLACE_WITH_CRITICAL_WEBHOOK_URL"
+  }
+}

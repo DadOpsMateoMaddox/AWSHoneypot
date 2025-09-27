@@ -1,0 +1,29 @@
+[Unit]
+Description=Cowrie Honeypot Discord Monitor
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=cowrie
+Group=cowrie
+WorkingDirectory=/opt/cowrie/discord-monitor
+ExecStart=/usr/bin/python3 /opt/cowrie/discord-monitor/discord_honeypot_monitor.py /opt/cowrie/discord-monitor/discord_config.json
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/cowrie/discord-monitor
+PrivateTmp=yes
+
+# Environment
+Environment=PYTHONPATH=/opt/cowrie/discord-monitor
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

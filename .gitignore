@@ -23,6 +23,13 @@ aws-credentials*
 secrets/
 config/secrets/
 
+# Discord Webhook Configurations (NEVER commit webhook URLs!)
+discord_config.json
+**/discord_config.json
+webhook_urls.*
+discord_webhooks.*
+*webhook*config*
+
 # Backup SSH Keys
 .ssh-backup/
 
