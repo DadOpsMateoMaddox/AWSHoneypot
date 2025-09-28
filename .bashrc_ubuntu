@@ -1,0 +1,97 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# Enhanced for AIT670 Honeypot Project - Ubuntu WSL
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# History settings - keep more for security analysis
+HISTCONTROL=ignoreboth
+shopt -s histappend
+HISTSIZE=5000
+HISTFILESIZE=10000
+
+# Check window size and update LINES/COLUMNS
+shopt -s checkwinsize
+
+# Make less more friendly for non-text input files
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Enhanced prompt for Ubuntu WSL (removed debian_chroot references)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+if [ "$color_prompt" = yes ]; then
+    PS1='\[\033[01;32m\]\u@ubuntu-wsl\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='\u@ubuntu-wsl:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# Terminal title
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;\u@ubuntu-wsl: \w\a\]$PS1"
+    ;;
+esac
+
+# Enable color support
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Standard aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# === HONEYPOT PROJECT ALIASES ===
+# SSH and server access
+alias ssh-honeypot='ssh -i ~/honeypot-key.pem ubuntu@44.222.200.1'
+alias ssh-honeypot-verbose='ssh -v -i ~/honeypot-key.pem ubuntu@44.222.200.1'
+
+# AWS CLI shortcuts (update with your actual instance ID)
+alias aws-session-manager='aws ssm start-session --target YOUR_INSTANCE_ID'
+
+# Project navigation
+alias cd-honeypot='cd "/mnt/d/School/AIT670 Cloud Computing In Person/AWSHoneypot"'
+alias cd-deploy='cd "/mnt/d/School/AIT670 Cloud Computing In Person/AWSHoneypot/02-Deployment-Scripts"'
+
+# Git shortcuts for project
+alias git-honeypot-status='cd-honeypot && git status'
+alias git-honeypot-push='cd-honeypot && git add . && git commit -m "Update from WSL" && git push'
+
+# Log monitoring (for when connected to honeypot server)
+alias cowrie-logs='sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.json'
+alias cowrie-logs-pretty='sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.json | jq .'
+alias discord-monitor-status='sudo systemctl status cowrie-discord-monitor'
+alias discord-monitor-logs='sudo journalctl -u cowrie-discord-monitor -f'
+
+# Development helpers
+alias python-venv='python3 -m venv venv && source venv/bin/activate'
+alias pip-upgrade='pip install --upgrade pip'
+
+# Load additional aliases if they exist
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# Enable programmable completion
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Welcome message for honeypot project
+echo "🍯 AIT670 Honeypot Project Environment Ready"
+echo "Useful aliases: ssh-honeypot, cd-honeypot, discord-monitor-status"

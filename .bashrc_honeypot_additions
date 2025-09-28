@@ -1,0 +1,58 @@
+# === EC2 HONEYPOT CONNECTION ===
+# SSH to honeypot server
+alias ssh-honeypot='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com'
+alias ssh-honeypot-verbose='ssh -v -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com'
+
+# === DIRECT DIRECTORY ACCESS (no /mnt needed) ===
+# Create symlinks for easy access - these will be created when bashrc loads
+if [ ! -L ~/AWSHoneypot ]; then
+    ln -sf "/mnt/d/School/AIT670 Cloud Computing In Person/AWSHoneypot" ~/AWSHoneypot 2>/dev/null
+fi
+
+if [ ! -L ~/honeypot-deploy ]; then
+    ln -sf "/mnt/d/School/AIT670 Cloud Computing In Person/AWSHoneypot/02-Deployment-Scripts" ~/honeypot-deploy 2>/dev/null
+fi
+
+# Directory shortcuts
+alias cd-honeypot='cd ~/AWSHoneypot'
+alias cd-deploy='cd ~/honeypot-deploy'
+alias ls-honeypot='ls -la ~/AWSHoneypot'
+
+# === PROJECT MANAGEMENT ===
+# Git shortcuts
+alias honeypot-status='cd ~/AWSHoneypot && git status'
+alias honeypot-push='cd ~/AWSHoneypot && git add . && git commit -m "Update from WSL" && git push'
+alias honeypot-pull='cd ~/AWSHoneypot && git pull'
+
+# === REMOTE HONEYPOT MANAGEMENT ===
+# Deploy Discord monitor
+alias deploy-discord='scp -i ~/.ssh/gmu-honeypot-key.pem ~/honeypot-deploy/setup_discord_complete.sh ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com:~ && ssh-honeypot "sudo bash setup_discord_complete.sh"'
+
+# Remote log monitoring (when connected via SSH)
+alias remote-cowrie-logs='ssh-honeypot "sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.json"'
+alias remote-discord-status='ssh-honeypot "sudo systemctl status cowrie-discord-monitor"'
+alias remote-discord-logs='ssh-honeypot "sudo journalctl -u cowrie-discord-monitor -f"'
+
+# === CONVENIENCE FUNCTIONS ===
+# Quick honeypot info
+honeypot-info() {
+    echo "🍯 AIT670 Honeypot Project Info"
+    echo "=============================="
+    echo "Local project: ~/AWSHoneypot"
+    echo "Deploy scripts: ~/honeypot-deploy"
+    echo "SSH command: ssh-honeypot"
+    echo "Instance: i-04d996c187504b547"
+    echo "Host: ec2-44-222-200-1.compute-1.amazonaws.com"
+}
+
+# Deploy and monitor in one command
+honeypot-deploy-and-monitor() {
+    echo "🚀 Deploying Discord monitor..."
+    deploy-discord
+    sleep 5
+    echo "📊 Checking status..."
+    remote-discord-status
+}
+
+echo "🍯 Honeypot environment loaded!"
+echo "Use: ssh-honeypot, cd-honeypot, deploy-discord, honeypot-info"

@@ -1,0 +1,82 @@
+@startuml Deployment Sequence
+!theme aws-orange
+title Honeypot Deployment and Team Access Sequence
+
+actor "Team Leader" as leader
+actor "Team Member" as member
+participant "AWS Console" as aws
+participant "CloudFormation" as cf
+participant "EC2 Instance" as ec2
+participant "Cowrie Honeypot" as cowrie
+participant "WSL Environment" as wsl
+participant "VS Code" as vscode
+
+== Infrastructure Deployment ==
+leader -> aws : Login to AWS Console
+leader -> cf : Deploy CloudFormation stack\ngmu-honeypot-stack.yaml
+cf -> aws : Create VPC, Security Groups
+cf -> aws : Launch EC2 instance
+aws -> ec2 : **CREATED**: Amazon Linux 2\nIP: 44.222.200.1
+ec2 -> leader : Instance ready
+
+== Honeypot Installation ==
+leader -> ec2 : SSH connection\nssh -i key.pem ec2-user@44.222.200.1
+leader -> ec2 : Install Python dependencies
+leader -> ec2 : Clone Cowrie repository
+leader -> ec2 : Configure Cowrie settings
+leader -> cowrie : Start honeypot service\nsudo -u cowrie python cowrie.py start
+cowrie -> ec2 : **ACTIVE**: Listening on port 2222
+
+== Team Onboarding ==
+leader -> member : Share SSH key\ngmu-honeypot-key.pem
+leader -> member : Provide access tutorial
+member -> wsl : Install WSL2\nwsl --install
+member -> wsl : Copy SSH key to ~/.ssh/
+member -> wsl : Set key permissions\nchmod 400 key.pem
+
+== Team Access Setup ==
+member -> wsl : Create SSH alias\nalias ec2='ssh -i key.pem ec2-user@IP'
+member -> wsl : Test connection\nec2
+wsl -> ec2 : SSH connection established
+ec2 -> member : **SUCCESS**: Connected to honeypot server
+
+== VS Code Integration ==
+member -> vscode : Install Remote-WSL extension
+member -> vscode : Connect to WSL\nCtrl+Shift+P > WSL: Connect
+vscode -> wsl : **CONNECTED**: VS Code to WSL
+member -> vscode : Open terminal in WSL
+vscode -> wsl : Integrated terminal ready
+
+== Honeypot Monitoring ==
+member -> ec2 : Check honeypot status\nsudo netstat -tlnp | grep 2222
+ec2 -> member : Honeypot listening on 2222
+member -> ec2 : View live logs\nsudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log
+ec2 -> member : **STREAMING**: Real-time attack logs
+
+== Testing and Validation ==
+member -> ec2 : Test honeypot\nssh -p 2222 root@44.222.200.1
+ec2 -> cowrie : Forward connection to honeypot
+cowrie -> member : **FAKE LOGIN**: root@honeypot:~#
+member -> cowrie : Execute test commands\nwhoami, ls, cat /etc/passwd
+cowrie -> member : Realistic fake responses
+cowrie -> ec2 : **LOG**: Test session recorded
+
+== Team Coordination ==
+member -> leader : Report honeypot status\n"All systems operational"
+leader -> member : Share interesting findings\n"New attack pattern detected"
+member -> ec2 : Download log files\nscp logs/*.json local/
+ec2 -> member : **TRANSFER**: Attack session logs
+
+== Maintenance Operations ==
+leader -> ec2 : Update fake filesystem\nAdd new decoy files
+leader -> cowrie : Restart honeypot\nsudo -u cowrie python cowrie.py restart
+cowrie -> ec2 : **RESTARTED**: Enhanced honeypot active
+leader -> member : Coordinate maintenance window\n"Honeypot offline 5 minutes"
+
+note over leader, member
+  Team maintains 24/7 monitoring
+  rotation to ensure continuous
+  security intelligence gathering
+end note
+
+@enduml

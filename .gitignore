@@ -1,0 +1,121 @@
+# AWS Honeypot Project - Git Ignore File
+# Excludes all sensitive information and secrets
+
+# SSH Keys and Certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+.ssh/
+05-Security-Config/
+
+# AWS Credentials and Config
+.aws/
+aws-credentials*
+*credentials*
+*access-key*
+*secret*
+
+# Environment Variables and Secrets
+.env
+.env.*
+secrets/
+config/secrets/
+
+# Discord Webhook Configurations (NEVER commit webhook URLs!)
+discord_config.json
+**/discord_config.json
+webhook_urls.*
+discord_webhooks.*
+*webhook*config*
+
+# Backup SSH Keys
+.ssh-backup/
+
+# Log Files (may contain sensitive data)
+*.log
+logs/
+var/log/
+
+# Temporary Files
+*.tmp
+*.temp
+*~
+.DS_Store
+Thumbs.db
+
+# IDE and Editor Files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+
+# Old/Legacy Files (not current implementation)
+local-honeypot-key.pem
+AWS_Key
+
+# Personal Notes and Drafts
+*draft*
+*notes*
+*personal*
+
+# Generated PlantUML Images
+*.png
+*.svg
+*.pdf
+
+# Compiled Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS Generated Files
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Backup Files
+*.bak
+*.backup
+*~
+
+# Archive Files
+*.zip
+*.tar
+*.gz
+*.rar
+
+# Microsoft Office Temp Files
+~$*
+
+# Browser Cache and Temporary Downloads
+*_files/
+*.download
+saved_resource.*
+
+# OneNote Files
+*.one
+*.onetoc2
+
+# Audio/Video Files (not project-related)
+*.mp3
+*.wav
+*.mp4
+*.avi
+*.mov
+
+# General Study Materials (belong in main AIT670 directory)
+*Study_Guide*
+*study_guide*
+*Topic-Proposal*
+*topic-proposal*
+*Proposal*
+*Scope*
+
+# HTML Files from web searches
+*Search.html
+*search.html
