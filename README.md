@@ -13,7 +13,7 @@
 - **Team Collaboration**: Multi-member project coordination and management
 
 ### 🏗️ Technical Architecture
-- **Platform**: AWS EC2 (Amazon Linux 2)
+- **Platform**: AWS EC2 (Ubuntu Jammy 22.04)
 - **Honeypot**: Cowrie v2.5.0 SSH/Telnet Honeypot
 - **Infrastructure**: CloudFormation IaC deployment
 - **Monitoring**: Comprehensive logging and session recording
@@ -118,8 +118,10 @@ This project is a **collaborative effort** by the GMU AIT670 Cloud Computing tea
 ## 🌐 Live Environment Details
 
 ### 🖥️ **EC2 Infrastructure:**
-- **Instance Type**: AWS EC2 (Amazon Linux 2)
-- **Public IP**: 44.222.200.1 *(Production environment)*
+- **Instance Type**: AWS EC2 (Ubuntu Jammy 22.04)
+- **Public IP**: **3.140.96.146** *(Elastic IP - Permanent)*
+- **Instance ID**: i-097cb628946b07879
+- **Region**: us-east-2c
 - **SSH Access**: Port 22 (team administrative access)
 - **Honeypot Service**: Port 2222 (public-facing deception service)
 - **Security**: Isolated VPC with comprehensive security groups

@@ -24,9 +24,9 @@ HISTFILESIZE=10000
 shopt -s checkwinsize
 
 # EC2 Honeypot Connection
-alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com'
-alias honeypot='ssh -p 2222 root@ec2-44-222-200-1.compute-1.amazonaws.com'
-alias logs='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com "sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log"'
+alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146'
+alias honeypot='ssh -p 2222 root@3.140.96.146'
+alias logs='ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146 "sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log"'
 
 # Directory shortcuts
 alias cdh='cd ~/AWSHoneypot'

@@ -71,18 +71,18 @@
 
 **Type this command exactly:**
 ```bash
-ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1
+ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146
 ```
 
 **What this means:**
 - `ssh` = connect to another computer
 - `-i ~/.ssh/gmu-honeypot-key.pem` = use this key file
-- `ec2-user` = username on the server
-- `44.222.200.1` = our server's address
+- `ubuntu` = username on the server
+- `3.140.96.146` = our server's address (Elastic IP - permanent)
 
 **If successful, you'll see:**
 ```
-[ec2-user@ip-172-31-21-182 ~]$
+ubuntu@ip-172-31-39-74:~$
 ```
 **Congratulations! You're now connected to our cloud server!**
 
@@ -97,7 +97,7 @@ ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1
 
 3. **Add this line:**
    ```bash
-   alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1'
+   alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146'
    ```
 
 4. **Save and exit:**
@@ -158,7 +158,7 @@ sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log
 
 **Test the honeypot (open a second terminal):**
 ```bash
-ssh -p 2222 root@44.222.200.1
+ssh -p 2222 root@3.140.96.146
 ```
 - This connects to our fake server
 - Try commands like `ls`, `whoami`, `cat /etc/passwd`
@@ -177,12 +177,12 @@ sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py start
 
 When you see:
 ```
-[ec2-user@ip-172-31-21-182 ~]$
+ubuntu@ip-172-31-39-74:~$
 ```
 
 This means:
-- `ec2-user` = your username
-- `ip-172-31-21-182` = server name
+- `ubuntu` = your username
+- `ip-172-31-39-74` = server name (internal hostname)
 - `~` = you're in your home folder
 - `$` = ready for your command
 

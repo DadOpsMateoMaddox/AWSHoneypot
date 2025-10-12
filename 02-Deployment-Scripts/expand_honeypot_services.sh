@@ -417,10 +417,10 @@ MULTI_SCRIPT
 
 # Upload and execute the deployment script
 echo "📤 Uploading multi-service deployment script..."
-scp -i ~/.ssh/temp-key.pem /tmp/deploy_multi_services.sh ubuntu@ec2-44-222-200-1.compute-1.amazonaws.com:/tmp/
+scp -i ~/.ssh/temp-key.pem /tmp/deploy_multi_services.sh ubuntu@3.140.96.146:/tmp/
 
 echo "🎯 Executing multi-service deployment on EC2..."
-ssh -i ~/.ssh/temp-key.pem ubuntu@ec2-44-222-200-1.compute-1.amazonaws.com "sudo bash /tmp/deploy_multi_services.sh"
+ssh -i ~/.ssh/temp-key.pem ubuntu@3.140.96.146 "sudo bash /tmp/deploy_multi_services.sh"
 
 echo ""
 echo "🍯 ENHANCED HONEYPOT DEPLOYMENT COMPLETE!"
