@@ -21,14 +21,14 @@ This system provides real-time Discord notifications for activities detected by 
 
 1. **Upload files to your honeypot server:**
    ```bash
-   scp -i your-key.pem discord_* ubuntu@44.222.200.1:~/
-   scp -i your-key.pem requirements.txt ubuntu@44.222.200.1:~/
-   scp -i your-key.pem deploy_discord_monitor.sh ubuntu@44.222.200.1:~/
+   scp -i your-key.pem discord_* ubuntu@3.140.96.146:~/
+   scp -i your-key.pem requirements.txt ubuntu@3.140.96.146:~/
+   scp -i your-key.pem deploy_discord_monitor.sh ubuntu@3.140.96.146:~/
    ```
 
 2. **SSH into your server:**
    ```bash
-   ssh -i your-key.pem ubuntu@44.222.200.1
+   ssh -i your-key.pem ubuntu@3.140.96.146
    ```
 
 3. **Run the deployment script:**
