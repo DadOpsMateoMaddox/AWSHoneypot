@@ -13,6 +13,7 @@ import time
 import hashlib
 import re
 import platform
+import os
 from datetime import datetime
 from pathlib import Path
 from collections import defaultdict
@@ -451,12 +452,21 @@ class AdvancedHoneypotMonitor:
         }
         
         try:
+            if not self.webhook_url:
+                print(f"❌ Discord webhook not configured, skipping alert: {title}")
+                return
+
             async with aiohttp.ClientSession() as session:
                 async with session.post(self.webhook_url, json=payload) as response:
                     if response.status == 204:
                         print(f"✅ Discord alert sent: {title}")
                     else:
-                        print(f"❌ Discord webhook failed: {response.status}")
+                        # Try to read response body for better diagnostics
+                        try:
+                            text = await response.text()
+                        except Exception:
+                            text = "<no response body>"
+                        print(f"❌ Discord webhook failed: {response.status} - {text}")
         except Exception as e:
             print(f"🚨 Discord webhook error: {e}")
     
@@ -550,12 +560,22 @@ class AdvancedHoneypotMonitor:
 
 # Usage example
 async def main():
-    # Your actual Discord webhook URL
-    DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1421320217774260356/_8ymN9spWhx0hFWLkntwTu-v0b4QPvdIwndtEL_ty1mmofiyoop9cyKl0tmbfpO5yNQ-"
-    
-    monitor = AdvancedHoneypotMonitor(DISCORD_WEBHOOK)
-    
-    # Start monitoring
+    # Prefer webhook from environment, then from a standard config path
+    webhook = os.environ.get('DISCORD_WEBHOOK_URL')
+    config_path = Path('/opt/cowrie/discord-monitor/discord_config.json')
+
+    if not webhook and config_path.exists():
+        try:
+            cfg = json.loads(config_path.read_text())
+            webhook = cfg.get('discord_webhook_url')
+        except Exception as e:
+            print(f"Could not read config file {config_path}: {e}")
+
+    if not webhook:
+        print("Error: Discord webhook URL not configured. Set DISCORD_WEBHOOK_URL or update /opt/cowrie/discord-monitor/discord_config.json")
+        return
+
+    monitor = AdvancedHoneypotMonitor(webhook)
     await monitor.monitor_cowrie_logs()
 
 if __name__ == "__main__":
