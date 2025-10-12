@@ -167,7 +167,7 @@ sudo systemctl status cowrie-discord-monitor
 Generate test events to verify the system:
 ```bash
 # Connect to honeypot (from different IP)
-ssh -p 2222 admin@44.222.200.1
+ssh -p 2222 admin@3.140.96.146
 
 # Try common credentials
 # Username: admin, Password: admin
