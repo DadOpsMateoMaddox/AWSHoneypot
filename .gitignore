@@ -30,6 +30,16 @@ webhook_urls.*
 discord_webhooks.*
 *webhook*config*
 
+# Threat Intelligence API Keys and Secrets (NEVER commit!)
+.env
+**/.env
+*.env
+!.env.example
+production.env
+secrets_loader.py.local
+intel_cache.json
+**/intel_cache.json
+
 # Backup SSH Keys
 .ssh-backup/
 
@@ -119,3 +129,34 @@ saved_resource.*
 # HTML Files from web searches
 *Search.html
 *search.html
+
+# Troubleshooting and Summary Documentation (temporary operational notes)
+INFRASTRUCTURE-CONSOLIDATION-GUIDE.md
+REVERSION-COMPLETE-SUMMARY.md
+ISSUE-RESOLVED-SUMMARY.md
+IP-UPDATE-SUMMARY.md
+ELASTIC-IP-UPDATE-GUIDE.md
+EC2-VERIFICATION-CHECKLIST.md
+DISCORD-PIN-MESSAGE.md
+QUICK-REFERENCE.md
+Discord-Progress-Update.md
+
+# AI/GPT Instructions and Context Files
+Honeypot-GPT-Instructions.md
+*-GPT-Instructions.md
+*gpt-instructions*
+
+# Script Files for One-Time Fixes
+revert-to-correct-ip.sh
+*-revert-*.sh
+
+# Team Tutorials and Training Materials (sensitive/internal docs)
+# Only commit actual code, scripts, and architecture diagrams
+03-Team-Tutorials/
+!03-Team-Tutorials/*.puml
+!03-Team-Tutorials/*.md
+!03-Team-Tutorials/README.md
+
+# Exception: Keep essential public-facing guides
+!03-Team-Tutorials/team-access-tutorial.md
+!03-Team-Tutorials/beginner-team-tutorial.md

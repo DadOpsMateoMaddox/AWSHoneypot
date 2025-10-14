@@ -1,0 +1,154 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'GMU AIT670 Honeypot Infrastructure - us-east-1 (Import Existing Resources)'
+
+# This template is designed to IMPORT existing honeypot resources in us-east-1
+# Instance ID: i-04d996c187504b547
+# Elastic IP: eipalloc-08590544ca10eec05 (44.218.220.47)
+# Region: us-east-1
+
+Parameters:
+  KeyPairName:
+    Type: String
+    Default: 'gmu-honeypot-key'
+    Description: EC2 Key Pair name for SSH access (must already exist in us-east-1)
+  
+  TeamIPRange:
+    Type: String
+    Default: '0.0.0.0/0'
+    Description: IP range for team management access (restrict in production)
+  
+  ExistingInstanceId:
+    Type: String
+    Default: 'i-04d996c187504b547'
+    Description: Existing honeypot instance ID to import
+  
+  ExistingElasticIpAllocationId:
+    Type: String
+    Default: 'eipalloc-08590544ca10eec05'
+    Description: Existing Elastic IP allocation ID to import
+
+Resources:
+  # Security Group - Import existing or create new
+  HoneypotSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: gmu-honeypot-sg-managed
+      GroupDescription: Security group for GMU honeypot (CloudFormation managed)
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        # Honeypot SSH (fake SSH on port 2222)
+        - IpProtocol: tcp
+          FromPort: 2222
+          ToPort: 2222
+          CidrIp: 0.0.0.0/0
+          Description: SSH Honeypot - Open to world
+        
+        # Honeypot Telnet (port 2223)
+        - IpProtocol: tcp
+          FromPort: 2223
+          ToPort: 2223
+          CidrIp: 0.0.0.0/0
+          Description: Telnet Honeypot - Open to world
+        
+        # Management SSH (real SSH on port 22)
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref TeamIPRange
+          Description: Management SSH - Restricted to team
+        
+        # HTTP Honeypot (optional)
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: HTTP Honeypot - Open to world
+        
+        # HTTPS Honeypot (optional)
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: HTTPS Honeypot - Open to world
+      
+      SecurityGroupEgress:
+        # Allow all outbound (for Discord webhooks, updates, etc.)
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic
+      
+      Tags:
+        - Key: Name
+          Value: GMU-Honeypot-SG-Managed
+        - Key: Project
+          Value: AIT670-Honeypot
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # VPC - Default VPC reference
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 172.31.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: Default-VPC-Reference
+
+  # Note: The actual instance (i-04d996c187504b547) cannot be directly imported
+  # You need to either:
+  # 1. Manually associate the new security group with the existing instance
+  # 2. Create an AMI from the existing instance and launch new one with CF
+  # 3. Use resource import feature (CloudFormation → Import resources into stack)
+
+  # Elastic IP Association
+  # Note: This associates the existing Elastic IP with the existing instance
+  ElasticIPAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      AllocationId: !Ref ExistingElasticIpAllocationId
+      InstanceId: !Ref ExistingInstanceId
+
+Outputs:
+  HoneypotPublicIP:
+    Description: Honeypot Elastic IP (permanent)
+    Value: '44.218.220.47'
+    Export:
+      Name: !Sub '${AWS::StackName}-PublicIP'
+  
+  HoneypotInstanceId:
+    Description: EC2 Instance ID
+    Value: !Ref ExistingInstanceId
+    Export:
+      Name: !Sub '${AWS::StackName}-InstanceId'
+  
+  ElasticIPAllocation:
+    Description: Elastic IP Allocation ID
+    Value: !Ref ExistingElasticIpAllocationId
+    Export:
+      Name: !Sub '${AWS::StackName}-EIP-AllocationId'
+  
+  SecurityGroupId:
+    Description: Security Group ID for honeypot
+    Value: !Ref HoneypotSecurityGroup
+    Export:
+      Name: !Sub '${AWS::StackName}-SecurityGroupId'
+  
+  Region:
+    Description: AWS Region
+    Value: us-east-1
+    Export:
+      Name: !Sub '${AWS::StackName}-Region'
+  
+  ManagementSSHCommand:
+    Description: SSH command for management access
+    Value: 'ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47'
+  
+  HoneypotSSHCommand:
+    Description: Command to test honeypot (fake SSH)
+    Value: 'ssh -p 2222 root@44.218.220.47'
+  
+  CowrieLogsPath:
+    Description: Path to Cowrie logs on instance
+    Value: '/opt/cowrie/var/log/cowrie/cowrie.json'
