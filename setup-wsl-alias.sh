@@ -11,7 +11,7 @@ chmod 600 ~/local-honeypot-key.pem
 
 # Add EC2 alias to bashrc if it doesn't exist
 if ! grep -q "alias ec2=" ~/.bashrc; then
-    echo 'alias ec2="ssh -i ~/local-honeypot-key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@44.218.220.47"' >> ~/.bashrc
+    echo 'alias ec2="ssh -i ~/local-honeypot-key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@3.140.96.146"' >> ~/.bashrc
     echo "✅ EC2 alias added to ~/.bashrc"
 else
     echo "ℹ️  EC2 alias already exists in ~/.bashrc"

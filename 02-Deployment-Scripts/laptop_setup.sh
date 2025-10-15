@@ -24,7 +24,7 @@ chmod 600 ~/.ssh/honeypot-key.pem
 echo "[3/6] Creating SSH config..."
 cat > ~/.ssh/config << 'EOF'
 Host honeypot
-    HostName 44.222.200.1
+    HostName 3.140.96.146
     User ubuntu
     IdentityFile ~/.ssh/honeypot-key.pem
     StrictHostKeyChecking no
@@ -32,7 +32,7 @@ Host honeypot
     ServerAliveCountMax 3
 
 Host honeypot-verbose
-    HostName 44.222.200.1
+    HostName 3.140.96.146
     User ubuntu
     IdentityFile ~/.ssh/honeypot-key.pem
     StrictHostKeyChecking no

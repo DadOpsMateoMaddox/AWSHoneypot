@@ -15,7 +15,7 @@ wsl --install
 ## Step 2: Get the SSH Key
 **Team Leader will provide:**
 - File: `gmu-honeypot-key.pem`
-- EC2 IP: `44.222.200.1`
+- EC2 IP: `3.140.96.146` (Elastic IP - permanent)
 
 **Save the key file to your WSL home directory:**
 ```bash
@@ -28,10 +28,10 @@ chmod 400 ~/.ssh/gmu-honeypot-key.pem
 ## Step 3: Test Connection
 ```bash
 # Test SSH connection
-ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1
+ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146
 
 # If successful, you'll see:
-# [ec2-user@ip-172-31-21-182 ~]$
+# ubuntu@ip-172-31-39-74:~$
 ```
 
 ## Step 4: Create Convenient Alias
@@ -41,7 +41,7 @@ Add to your `~/.bashrc`:
 nano ~/.bashrc
 
 # Add this line at the end:
-alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1'
+alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146'
 
 # Save and reload
 source ~/.bashrc
@@ -62,7 +62,7 @@ sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py status
 sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log
 
 # Test honeypot (from another terminal)
-ssh -p 2222 root@44.222.200.1
+ssh -p 2222 root@3.140.96.146
 
 # Stop/Start Cowrie
 sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py stop
@@ -82,8 +82,8 @@ chmod 400 ~/.ssh/gmu-honeypot-key.pem
 - Verify security group allows SSH (port 22) from your IP
 
 **Wrong User:**
-- Use `ec2-user`, not `ubuntu` or `root`
-- Amazon Linux 2 uses `ec2-user` as default
+- Use `ubuntu`, not `ec2-user` or `root`
+- Ubuntu Jammy AMI uses `ubuntu` as default
 
 ## Security Notes
 - **Never share the private key publicly**
@@ -111,7 +111,7 @@ chmod 400 ~/.ssh/gmu-honeypot-key.pem
 |---------|---------|
 | `ec2` | Connect to EC2 instance |
 | `sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log` | View live logs |
-| `ssh -p 2222 root@44.222.200.1` | Test honeypot |
+| `ssh -p 2222 root@3.140.96.146` | Test honeypot |
 | `sudo netstat -tlnp \| grep 2222` | Check if honeypot is running |
 
 ---

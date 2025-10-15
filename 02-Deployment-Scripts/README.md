@@ -13,10 +13,10 @@ This enhanced monitoring system provides instant Discord notifications when atta
 ### 2. Deploy Enhanced Monitor
 ```bash
 # Upload deployment scripts to your AWS honeypot
-scp -i ~/.ssh/gmu-honeypot-key.pem 02-Deployment-Scripts/* ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com:~/
+scp -i ~/.ssh/gmu-honeypot-key.pem 02-Deployment-Scripts/* ubuntu@3.140.96.146:~/
 
 # SSH to honeypot and deploy enhanced system
-ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com
+ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146
 chmod +x deploy_enhanced_discord_monitor.sh
 sudo ./deploy_enhanced_discord_monitor.sh
 ```
@@ -206,7 +206,7 @@ sudo -u cowrie python3 /opt/cowrie/discord-monitor/test_webhook.py
 Generate test activity:
 ```bash
 # From another machine, try to connect
-ssh -p 2222 admin@your-honeypot-ip
+ssh -p 2222 admin@3.140.96.146
 
 # Try common credentials:
 # admin/admin, root/123456, ubuntu/ubuntu

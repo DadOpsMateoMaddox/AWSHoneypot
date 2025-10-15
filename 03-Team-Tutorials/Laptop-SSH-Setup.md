@@ -30,14 +30,14 @@ chmod 600 ~/.ssh/honeypot-key.pem
 
 ### 4. Test SSH Connection
 ```bash
-ssh -i ~/.ssh/honeypot-key.pem ubuntu@44.222.200.1
+ssh -i ~/.ssh/honeypot-key.pem ubuntu@3.140.96.146
 ```
 
 ### 5. Add to SSH Config (Optional but Recommended)
 Create/edit `~/.ssh/config`:
 ```
 Host honeypot
-    HostName 44.222.200.1
+    HostName 3.140.96.146
     User ubuntu
     IdentityFile ~/.ssh/honeypot-key.pem
     StrictHostKeyChecking no
@@ -74,13 +74,13 @@ Copy and paste this prompt to GitHub Copilot on your laptop:
 I need to set up SSH access to my AWS EC2 honeypot server from this laptop. Help me:
 
 1. Create the proper `.ssh` directory structure in my home folder
-2. Set up an SSH config file for easy access to my honeypot server (IP: 44.222.200.1, user: ubuntu)
+2. Set up an SSH config file for easy access to my honeypot server (IP: 3.140.96.146, user: ubuntu)
 3. Create a bash script that tests the SSH connection
 4. Clone my AIT670 honeypot project from GitHub and set up the development environment
 5. Add useful aliases for honeypot management to my bash profile
 
 Server details:
-- IP: 44.222.200.1
+- IP: 3.140.96.146 (Elastic IP - permanent)
 - User: ubuntu
 - SSH key file: `~/.ssh/honeypot-key.pem` (I'll place the key file manually)
 - Project repo: AWSHoneypot (contains Discord monitoring scripts)

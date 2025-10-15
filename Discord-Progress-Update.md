@@ -5,7 +5,7 @@
 ### 🕘 **Timeline of Tonight's Work:**
 
 **8:00 PM - Initial Setup**
-- Connected to EC2 instance (44.222.200.1)
+- Connected to EC2 instance (3.140.96.146 - Elastic IP)
 - Attempted Cowrie installation but hit Python dependency issues
 - Latest Cowrie master branch required setuptools>=80 (not available on Amazon Linux 2)
 
@@ -68,7 +68,7 @@
 - **Documentation**: Comprehensive tutorials and setup guides ready
 
 ### 🔍 **Ready for Team Use:**
-- **Connect via**: `ssh -p 2222 root@44.222.200.1` (to test honeypot)
+- **Connect via**: `ssh -p 2222 root@3.140.96.146` (to test honeypot)
 - **Admin access**: Standard port 22 with team SSH keys
 - **Monitoring**: Live logs at `/opt/cowrie/var/log/cowrie/cowrie.log`
 - **All tutorials**: Available in GitHub repository

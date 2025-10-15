@@ -12,9 +12,9 @@ chmod 600 ~/.ssh/gmu-honeypot-key.pem
 cat >> ~/.bashrc << 'EOF'
 
 # EC2 Honeypot Aliases
-alias honeypot='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47'
-alias honeypot-test='ssh -p 2222 root@44.218.220.47'
-alias honeypot-logs='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47 "sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log"'
+alias honeypot='ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146'
+alias honeypot-test='ssh -p 2222 root@3.140.96.146'
+alias honeypot-logs='ssh -i ~/.ssh/gmu-honeypot-key.pem ubuntu@3.140.96.146 "sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log"'
 EOF
 
 # Reload bashrc

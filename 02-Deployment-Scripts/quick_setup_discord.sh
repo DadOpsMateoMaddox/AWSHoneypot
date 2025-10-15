@@ -28,7 +28,7 @@ print_error() {
 # Check if we're on the AWS instance
 if [[ ! -f "/opt/cowrie/bin/cowrie" ]]; then
     print_error "This doesn't appear to be the Cowrie honeypot server."
-    print_info "Make sure you're running this on the AWS EC2 instance (44.222.200.1)"
+    print_info "Make sure you're running this on the AWS EC2 instance (3.140.96.146)"
     exit 1
 fi
 
