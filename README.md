@@ -118,8 +118,10 @@ This project is a **collaborative effort** by the GMU AIT670 Cloud Computing tea
 ## 🌐 Live Environment Details
 
 ### 🖥️ **EC2 Infrastructure:**
-- **Instance Type**: AWS EC2 (Amazon Linux 2)
-- **Public IP**: 44.222.200.1 *(Production environment)*
+- **Instance ID**: `i-04d996c187504b547`
+- **Instance Type**: AWS EC2 t3.micro (Ubuntu 22.04)
+- **Public IP**: **44.218.220.47** *(Elastic IP - permanent)*
+- **SSH User**: `ubuntu`
 - **SSH Access**: Port 22 (team administrative access)
 - **Honeypot Service**: Port 2222 (public-facing deception service)
 - **Security**: Isolated VPC with comprehensive security groups

@@ -1,0 +1,7 @@
+root:x:*
+admin:x:*
+deploy:x:*
+backup:x:*
+webuser:x:*
+mysql:x:*
+postgres:x:*

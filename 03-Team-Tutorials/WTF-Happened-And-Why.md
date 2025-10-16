@@ -32,22 +32,22 @@ Here are the likely causes for the earlier problem:
 
 **Step 1 — Allocated a TRUE Elastic IP**
 
-Allocated: **3.140.96.146** (this is now *ours* permanently while attached)
+Allocated: **44.218.220.47** (this is now *ours* permanently while attached)
 
 **Step 2 — Properly Associated It**
 
 Command used:
 
 ```bash
-aws ec2 associate-address --instance-id i-097cb628946b07879 --public-ip 3.140.96.146
+aws ec2 associate-address --instance-id i-04d996c187504b547 --public-ip 44.218.220.47
 ```
 
 *(You can also associate by `--allocation-id` if you used `allocate-address --domain vpc`.)*
 
 **Step 3 — Verified the Association**
 
-- Confirmed EC2 console shows **Elastic IP** attached to `i-097cb628946b07879`.  
-- Confirmed SSH works with **3.140.96.146**.  
+- Confirmed EC2 console shows **Elastic IP** attached to `i-04d996c187504b547`.  
+- Confirmed SSH works with **44.218.220.47**.  
 - Verified the IP survives stop/start cycles.
 
 ---
@@ -161,24 +161,24 @@ aws ec2 start-instances --instance-ids YOUR_INSTANCE_ID
 
 ## 🔄 Updated Connection Info
 
-**New Static IP:** **3.140.96.146**
+**New Static IP:** **44.218.220.47**
 
 **SSH Command:**
 
 ```bash
-ssh -i gmu-honeypot-key.pem ec2-user@3.140.96.146
+ssh -i gmu-honeypot-key.pem ec2-user@44.218.220.47
 ```
 
-_Note: if your AMI is Ubuntu you may need `ubuntu@3.140.96.146` as the user._
+_Note: if your AMI is Ubuntu you may need `ec2-user@44.218.220.47` as the user._
 
 **Web Access:**
 
 ```
-http://3.140.96.146
+http://44.218.220.47
 ```
 
 **Termius Settings:**
-- Host: **3.140.96.146**  
+- Host: **44.218.220.47**  
 - User: **ec2-user** (or *ubuntu*)  
 - Port: **22**  
 - Key: *gmu-honeypot-key.pem*
@@ -192,7 +192,7 @@ http://3.140.96.146
 - CloudShell / CLI is faster for repetitive ops; GUI is fine for one-offs.  
 - Dynamic IPs are fine for temporary/dev usage.
 
-This IP will now remain **3.140.96.146** until we release the Elastic IP — so bookmarks and scripts will be stable. 🎯
+This IP will now remain **44.218.220.47** until we release the Elastic IP — so bookmarks and scripts will be stable. 🎯
 
 If you want, I can add a short runbook to the repo or update docs that reference the old IP.
 

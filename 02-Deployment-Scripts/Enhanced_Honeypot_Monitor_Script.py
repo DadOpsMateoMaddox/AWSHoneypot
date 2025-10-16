@@ -27,6 +27,12 @@ except ImportError:
     import geoip2.database
     import geoip2.errors
 
+# Threat Intelligence Integration
+from threat_enrichment import get_enrichment
+THREAT_INTEL_ENABLED = True
+print("✅ Initializing threat intelligence...")
+enricher = get_enrichment()
+print(f"✅ Threat intel ready ({len([k for k,v in enricher.apis_available.items() if v])}/6 APIs)") 
 class AdvancedHoneypotMonitor:
     def __init__(self, discord_webhook_url, cowrie_log_path="/opt/cowrie/var/log/cowrie/cowrie.json"):
         self.webhook_url = discord_webhook_url
@@ -368,15 +374,37 @@ class AdvancedHoneypotMonitor:
         })
     
     async def handle_failed_login(self, entry, session_id):
-        """Track failed login attempts"""
+        """Track failed login attempts with threat intelligence"""
         username = entry.get('username', '')
         password = entry.get('password', '')
+        src_ip = entry.get('src_ip', '')
         
         self.session_data[session_id]['login_attempts'].append({
             'username': username,
             'password': password,
             'timestamp': entry.get('timestamp', '')
         })
+        
+        # Build alert description
+        description = f"**IP:** `{src_ip}`\n**Username:** `{username}`\n**Password:** `{password}`"
+        
+        # Add threat intelligence enrichment
+        if THREAT_INTEL_ENABLED and enricher:
+            try:
+                print(f"🔍 Enriching IP: {src_ip}")
+                intel_data = enricher.enrich_ip(src_ip)
+                intel_text = enricher.format_for_discord(intel_data)
+                description += f"\n\n{intel_text}"
+            except Exception as e:
+                print(f"⚠️ Threat intel error: {e}")
+                description += f"\n\n⚠️ *Threat intel temporarily unavailable*"
+        
+        # Send Discord alert
+        await self.send_discord_alert(
+            f"🔐 Failed Login Attempt",
+            description,
+            color=0xff0000
+        )
     
     async def handle_file_download(self, entry, session_id):
         """Process file downloads"""

@@ -131,16 +131,16 @@ echo "Malware samples: $(find /opt/cowrie/var/downloads/ -type f | wc -l)"
 
 ### **Download Main Log File**
 ```bash
-scp -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com:/opt/cowrie/var/log/cowrie/cowrie.json ./honeypot_data.json
+scp -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47:/opt/cowrie/var/log/cowrie/cowrie.json ./honeypot_data.json
 ```
 
 ### **Download Complete Archive**
 ```bash
 # Create archive on EC2
-ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com "sudo tar -czf /tmp/honeypot_complete.tar.gz /opt/cowrie/var/log/ /opt/cowrie/var/downloads/"
+ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47 "sudo tar -czf /tmp/honeypot_complete.tar.gz /opt/cowrie/var/log/ /opt/cowrie/var/downloads/"
 
 # Download archive
-scp -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com:/tmp/honeypot_complete.tar.gz ./
+scp -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47:/tmp/honeypot_complete.tar.gz ./
 ```
 
 ---
@@ -256,7 +256,7 @@ ssh -i ~/local-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.co
 
 | Need | Command |
 |------|---------|
-| **Connect** | `ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@ec2-44-222-200-1.compute-1.amazonaws.com` |
+| **Connect** | `ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47` |
 | **Main Log** | `/opt/cowrie/var/log/cowrie/cowrie.json` |
 | **Live Monitor** | `tail -f /opt/cowrie/var/log/cowrie/cowrie.json \| jq .` |
 | **Quick Report** | `sudo /opt/cowrie/bin/elite_threat_intel.sh` |

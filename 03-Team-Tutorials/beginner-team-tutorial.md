@@ -71,14 +71,14 @@
 
 **Type this command exactly:**
 ```bash
-ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1
+ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47
 ```
 
 **What this means:**
 - `ssh` = connect to another computer
 - `-i ~/.ssh/gmu-honeypot-key.pem` = use this key file
-- `ec2-user` = username on the server
-- `44.222.200.1` = our server's address
+- `ubuntu` = username on the server (Ubuntu AMI)
+- `44.218.220.47` = our server's Elastic IP (permanent)
 
 **If successful, you'll see:**
 ```
@@ -97,7 +97,7 @@ ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1
 
 3. **Add this line:**
    ```bash
-   alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1'
+   alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47'
    ```
 
 4. **Save and exit:**
@@ -158,7 +158,7 @@ sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log
 
 **Test the honeypot (open a second terminal):**
 ```bash
-ssh -p 2222 root@44.222.200.1
+ssh -p 2222 root@44.218.220.47
 ```
 - This connects to our fake server
 - Try commands like `ls`, `whoami`, `cat /etc/passwd`

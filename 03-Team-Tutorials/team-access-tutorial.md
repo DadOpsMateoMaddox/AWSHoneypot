@@ -15,7 +15,9 @@ wsl --install
 ## Step 2: Get the SSH Key
 **Team Leader will provide:**
 - File: `gmu-honeypot-key.pem`
-- EC2 IP: `44.222.200.1`
+- EC2 Instance: `i-04d996c187504b547`
+- EC2 IP: `44.218.220.47` (Elastic IP - permanent)
+- SSH User: `ubuntu`
 
 **Save the key file to your WSL home directory:**
 ```bash
@@ -41,7 +43,9 @@ Add to your `~/.bashrc`:
 nano ~/.bashrc
 
 # Add this line at the end:
-alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1'
+```bash
+alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47'
+```
 
 # Save and reload
 source ~/.bashrc
@@ -111,7 +115,7 @@ chmod 400 ~/.ssh/gmu-honeypot-key.pem
 |---------|---------|
 | `ec2` | Connect to EC2 instance |
 | `sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log` | View live logs |
-| `ssh -p 2222 root@44.222.200.1` | Test honeypot |
+| `ssh -p 2222 root@44.218.220.47` | Test honeypot |
 | `sudo netstat -tlnp \| grep 2222` | Check if honeypot is running |
 
 ---
