@@ -1,14 +1,14 @@
-# 🎯 GreyNoise Integration - Complete Summary
+# GreyNoise Integration - Complete Summary
 
-## What We Built
+## Implementation Overview
 
-Added **GreyNoise threat intelligence** to your honeypot alert system. GreyNoise identifies mass internet scanners vs. targeted attacks.
+Added GreyNoise threat intelligence to honeypot alert system. GreyNoise identifies mass internet scanners vs. targeted attacks.
 
 ---
 
-## 🚀 Files Created/Modified
+## Files Created/Modified
 
-### ✅ New Files
+### New Files
 
 1. **`greynoiserequest.py`** - Standalone GreyNoise IP lookup tool
    - Tests GreyNoise API independently
@@ -22,25 +22,25 @@ Added **GreyNoise threat intelligence** to your honeypot alert system. GreyNoise
    - Analysis workflows
    - Troubleshooting guide
 
-### ✅ Modified Files
+### Modified Files
 
 1. **`threat_enrichment.py`**
    - Added `_query_greynoise()` method (line ~335)
    - Integrated into `enrich_ip()` query flow
-   - Enhanced `format_for_discord()` to show GreyNoise data FIRST (most important)
+   - Enhanced `format_for_discord()` to show GreyNoise data first (priority display)
    - POST request to `/v3/ip` endpoint with proper error handling
 
 2. **`.env.example`**
-   - Already had `GREYNOISE_KEY` placeholder
-   - Ready for team to copy and add their keys
+   - GREYNOISE_KEY placeholder included
+   - Template ready for team configuration
 
 3. **`THREAT-INTEL-README.md`**
    - Updated "What This Does" section to include GreyNoise
-   - Now lists 6 threat intel sources (was 5)
+   - Now lists 6 threat intel sources
 
 ---
 
-## 🔑 Key Concepts
+## Key Concepts
 
 ### Mass Scanner vs. Targeted Attack
 
@@ -60,43 +60,43 @@ Ports: 22, 23, 2222, 8080
 **Targeted Attack (NOT IN GreyNoise)**
 ```
 IP: 203.0.113.42
-GreyNoise: ❌ NOT SEEN
+GreyNoise: NOT SEEN
 
 → NOT mass scanning the internet.
-→ Potentially targeting YOU specifically.
-→ 🚨 HIGH PRIORITY - investigate!
+→ Potentially targeted attack.
+→ HIGH PRIORITY - investigate
 ```
 
 ---
 
-## 🎨 Discord Alert Format
+## Discord Alert Format
 
-When GreyNoise is enabled, alerts will show (appears FIRST):
+When GreyNoise is enabled, alerts display (priority position):
 
 ### Malicious Mass Scanner
 ```
-🔴 GreyNoise: MALICIOUS mass scanner
-   👤 Actor: Mirai Botnet
-   🏷️ Tags: SSH Bruteforce, Port Scanner
-   🔍 Scanning ports: 22, 23, 2222
+GreyNoise: MALICIOUS mass scanner
+   Actor: Mirai Botnet
+   Tags: SSH Bruteforce, Port Scanner
+   Scanning ports: 22, 23, 2222
 ```
 
 ### Benign Research Scanner
 ```
-🟢 GreyNoise: BENIGN mass scanner
-   👤 Actor: Shodan
-   🏷️ Tags: Internet Scanner, Research
-   🔍 Scanning ports: 22, 80, 443
+GreyNoise: BENIGN mass scanner
+   Actor: Shodan
+   Tags: Internet Scanner, Research
+   Scanning ports: 22, 80, 443
 ```
 
-### Targeted Attack (High Priority!)
+### Targeted Attack (High Priority)
 ```
-🟢 GreyNoise: Not mass scanning (targeted attack?)
+GreyNoise: Not mass scanning (potential targeted attack)
 ```
 
 ---
 
-## 🔧 How to Enable
+## Configuration
 
 **Already built in!** Just need to add API key:
 
@@ -163,20 +163,20 @@ ssh -p 2222 test@44.218.220.47
 
 ---
 
-## 🎯 Analysis Priorities
+## Analysis Priorities
 
 Use GreyNoise to triage alerts:
 
 | GreyNoise Status | Classification | Priority | Action |
 |------------------|----------------|----------|--------|
-| NOT SEEN | N/A | 🔴 **HIGH** | Investigate immediately |
-| SEEN | malicious | 🟡 Medium | Log, block if desired |
-| SEEN | benign | 🟢 Low | Whitelist (research) |
-| SEEN | unknown | 🟡 Medium | Monitor |
+| NOT SEEN | N/A | **HIGH** | Investigate immediately |
+| SEEN | malicious | Medium | Log, block if desired |
+| SEEN | benign | Low | Whitelist (research) |
+| SEEN | unknown | Medium | Monitor |
 
 ---
 
-## 🔍 What GreyNoise Tells You
+## GreyNoise Data Structure
 
 ```json
 {
@@ -198,26 +198,26 @@ Use GreyNoise to triage alerts:
 
 ---
 
-## 🚨 Why This Matters
+## Impact Analysis
 
 ### Before GreyNoise
 ```
 Alert: 185.220.101.1 tried SSH login
 Response: Investigate? Block? Ignore?
-🤷 No context on whether this is noise or targeted
+No context on whether this is noise or targeted
 ```
 
 ### After GreyNoise
 ```
 Alert: 185.220.101.1 tried SSH login
 GreyNoise: Mirai botnet, mass scanning entire internet
-Response: Low priority - just botnet noise
-✅ Focus on IPs NOT in GreyNoise (targeted!)
+Response: Low priority - botnet noise
+Focus on IPs NOT in GreyNoise (targeted attacks)
 ```
 
 ---
 
-## 📁 Integration Architecture
+## Integration Architecture
 
 ```
 Cowrie Honeypot
@@ -235,48 +235,48 @@ Discord Webhook
 
 ---
 
-## ✅ Current Status
+## Current Status
 
-**COMPLETE** - GreyNoise is fully integrated and ready to use!
+**COMPLETE** - GreyNoise is fully integrated and operational.
 
-- ✅ API client built (`_query_greynoise()`)
-- ✅ Environment variable support (`GREYNOISE_KEY`)
-- ✅ Caching enabled (48-hour TTL)
-- ✅ Discord formatting (shows first in alerts)
-- ✅ Error handling (continues if API fails)
-- ✅ Testing tools (standalone + integrated)
-- ✅ Documentation (integration guide)
+- API client built (`_query_greynoise()`)
+- Environment variable support (`GREYNOISE_KEY`)
+- Caching enabled (48-hour TTL)
+- Discord formatting (shows first in alerts)
+- Error handling (continues if API fails)
+- Testing tools (standalone + integrated)
+- Documentation (integration guide)
 
-**TO ENABLE**: Just add `GREYNOISE_KEY` to `.env` and restart service!
+**TO ENABLE**: Add `GREYNOISE_KEY` to `.env` and restart service.
 
 ---
 
-## 📚 Documentation Files
+## Documentation Files
 
-1. **GREYNOISE-INTEGRATION.md** - Complete integration guide (this file's big brother)
+1. **GREYNOISE-INTEGRATION.md** - Complete integration guide
 2. **THREAT-INTEL-README.md** - Quick start with all 6 APIs
 3. **THREAT-INTEL-DEPLOYMENT.md** - Full deployment guide
 4. **greynoiserequest.py** - Standalone testing tool
 
 ---
 
-## 🎓 Next Steps
+## Next Steps
 
 1. **Get GreyNoise API key** → https://www.greynoise.io/viz/account
 2. **Add to `.env`** → `GREYNOISE_KEY=your_key`
 3. **Restart service** → `sudo systemctl restart cowrie-discord-monitor`
 4. **Test alert** → `ssh -p 2222 test@44.218.220.47`
-5. **Check Discord** → Should see GreyNoise classification!
+5. **Verify Discord** → Confirm GreyNoise classification displayed
 
 ---
 
-## 💡 Pro Tips
+## Best Practices
 
-- **IPs NOT in GreyNoise are highest priority** - they're not mass scanning
+- **IPs NOT in GreyNoise are highest priority** - not mass scanning behavior
 - **Benign scanners can be whitelisted** - Shodan, Censys, security researchers
 - **Cache aggressively** - 48-hour TTL reduces API calls by 90%+
 - **Monitor classification trends** - Track malicious vs. benign ratios
 
 ---
 
-**Summary**: GreyNoise integration is DONE! Just add your API key to start seeing mass scanner classification in Discord alerts. IPs not in GreyNoise should be your top priority for investigation! 🎯
+**Summary**: GreyNoise integration is complete. Add API key to enable mass scanner classification in Discord alerts. IPs not in GreyNoise require priority investigation.

@@ -1,50 +1,50 @@
-# 🎯 GreyNoise Complete Integration Summary
+# GreyNoise Complete Integration Summary
 
-## What We Built (Final Status)
+## Implementation Status (Final)
 
-You now have a **complete GreyNoise threat intelligence system** with:
-1. ✅ IP lookup (individual threat classification)
-2. ✅ GNQL Stats (aggregate attack pattern analysis)
-3. ✅ Full integration with threat enrichment
-4. ✅ Comprehensive documentation
+Complete GreyNoise threat intelligence system implemented with:
+1. IP lookup (individual threat classification)
+2. GNQL Stats (aggregate attack pattern analysis)
+3. Full integration with threat enrichment
+4. Comprehensive documentation
 
 ---
 
-## 🔑 Your API Key
+## API Key Configuration
 
 **Secured in `production.env`**:
 ```
 GREYNOISE_KEY=1Ls3XX3wzJAkKCl1srKnHqCPqxjPOzgXIh2r31SDEbC8rBdfKuMJnF58dYRUICKI
 ```
 
-**Protected**: ✅ Listed in `.gitignore` (won't be committed to GitHub)
+**Protected**: Listed in `.gitignore` (excluded from repository commits)
 
 ---
 
-## 📁 Files Created
+## Files Created
 
 ### Tools (2 files)
 
 1. **`greynoiserequest.py`** - Individual IP lookup
    - Query single IPs for classification
    - Usage: `python3 greynoiserequest.py <ip> [api_key]`
-   - Shows: classification, actor, tags, ports, location
+   - Output: classification, actor, tags, ports, location
 
-2. **`greynoise_gnql_stats.py`** - Aggregate statistics (NEW!)
+2. **`greynoise_gnql_stats.py`** - Aggregate statistics
    - Query global attack patterns
    - Usage: `python3 greynoise_gnql_stats.py --preset ssh_bruteforce`
-   - Shows: top countries, orgs, actors, tags, ASNs, OSes
-   - **10 built-in preset queries** for honeypot analysis
+   - Output: top countries, orgs, actors, tags, ASNs, OSes
+   - 10 built-in preset queries for honeypot analysis
 
 ### Documentation (3 files)
 
 3. **`GREYNOISE-INTEGRATION.md`** - IP lookup integration guide
-   - What GreyNoise is and why it matters
-   - How to enable in threat_enrichment.py
+   - GreyNoise overview and application
+   - Integration with threat_enrichment.py
    - Testing procedures
    - Analysis workflows
 
-4. **`GREYNOISE-GNQL-GUIDE.md`** - GNQL Stats complete guide (NEW!)
+4. **`GREYNOISE-GNQL-GUIDE.md`** - GNQL Stats complete guide
    - GNQL query language tutorial
    - Preset queries for honeypot analysis
    - Real-world use cases
@@ -52,7 +52,7 @@ GREYNOISE_KEY=1Ls3XX3wzJAkKCl1srKnHqCPqxjPOzgXIh2r31SDEbC8rBdfKuMJnF58dYRUICKI
    - Export and visualization
 
 5. **`GREYNOISE-SUMMARY.md`** - Quick reference
-   - TL;DR of integration
+   - Integration summary
    - Key concepts
    - Testing commands
 
@@ -60,14 +60,14 @@ GREYNOISE_KEY=1Ls3XX3wzJAkKCl1srKnHqCPqxjPOzgXIh2r31SDEbC8rBdfKuMJnF58dYRUICKI
 
 6. **`threat_enrichment.py`** - Added GreyNoise integration
    - `_query_greynoise()` method
-   - Classification in Discord alerts (shown FIRST)
+   - Classification in Discord alerts (priority display)
    - 48-hour caching
 
-7. **`production.env`** - Added your GreyNoise key
-   - Ready to deploy to EC2
+7. **`production.env`** - Added GreyNoise API key
+   - Ready for EC2 deployment
 
-8. **`.env.example`** - Template for team
-   - Already had GreyNoise placeholder
+8. **`.env.example`** - Template for team members
+   - GreyNoise placeholder included
 
 ---
 
@@ -170,7 +170,7 @@ python3 greynoise_gnql_stats.py --preset telnet_attacks > report_telnet.txt
 python3 greynoise_gnql_stats.py --preset china_attacks > report_china.txt
 python3 greynoise_gnql_stats.py --preset russia_attacks > report_russia.txt
 
-# Include in your report:
+# Report contents:
 # - Top 10 attacking countries
 # - Top threat actors (Mirai, etc.)
 # - Most common attack types
@@ -238,20 +238,20 @@ echo "Report saved: report_$DATE.txt"
 
 ---
 
-## 🔍 Analysis Priority Guide
+## Analysis Priority Guide
 
 | GreyNoise Status | Priority | Action |
 |------------------|----------|--------|
-| **NOT SEEN** | 🔴 **HIGH** | Investigate immediately - not mass scanning, possibly targeting you! |
-| Seen - malicious | 🟡 Medium | Log and monitor - known bad actor but mass scanning everyone |
-| Seen - benign | 🟢 Low | Whitelist - legitimate research scanner (Shodan, Censys) |
-| Seen - unknown | 🟡 Medium | Monitor - unclear intent |
+| **NOT SEEN** | **HIGH** | Investigate immediately - not mass scanning, possible targeted attack |
+| Seen - malicious | Medium | Log and monitor - known threat actor conducting mass scanning |
+| Seen - benign | Low | Whitelist - legitimate research scanner (Shodan, Censys) |
+| Seen - unknown | Medium | Monitor - unclear intent |
 
-**Golden Rule**: IPs **NOT** in GreyNoise deserve your immediate attention!
+**Critical Rule**: IPs NOT in GreyNoise require immediate investigation.
 
 ---
 
-## 📈 10 Preset GNQL Queries
+## 10 Preset GNQL Queries
 
 Built into `greynoise_gnql_stats.py`:
 
@@ -268,12 +268,12 @@ Built into `greynoise_gnql_stats.py`:
 
 ---
 
-## ✅ Deployment Checklist
+## Deployment Checklist
 
 - [x] GreyNoise key added to `production.env`
 - [x] `.gitignore` protecting secrets
 - [x] `greynoiserequest.py` tool ready
-- [x] `greynoise_gnql_stats.py` tool ready (with 10 presets!)
+- [x] `greynoise_gnql_stats.py` tool ready (with 10 presets)
 - [x] Integration in `threat_enrichment.py`
 - [x] Documentation complete (3 guides)
 - [ ] Deploy to EC2: `./deploy-threat-intel.sh`
@@ -344,53 +344,53 @@ python3 greynoise_gnql_stats.py --preset recent_malicious
 
 ---
 
-## 💡 Pro Tips
+## Best Practices
 
-1. **Use GNQL Stats for reports** - Great for presentations and project documentation
-2. **Cache is your friend** - 48h TTL means 100 API calls = 100 unique IPs/day
-3. **NOT SEEN = HIGH PRIORITY** - These IPs aren't mass scanning, investigate!
+1. **Use GNQL Stats for reports** - Suitable for presentations and project documentation
+2. **Leverage caching** - 48h TTL means 100 API calls = 100 unique IPs/day
+3. **NOT SEEN = HIGH PRIORITY** - These IPs aren't mass scanning, requires investigation
 4. **Export to JSON** - Every GNQL query auto-exports for further analysis
 5. **Presets save time** - Use built-in presets instead of writing complex queries
 
 ---
 
-## 🎯 Summary
+## Summary
 
-### What You Have Now
+### Current Implementation
 
-✅ **GreyNoise API key** secured in `production.env`  
-✅ **IP Lookup Tool** for individual threat classification  
-✅ **GNQL Stats Tool** for aggregate attack analysis (10 presets!)  
-✅ **Discord Integration** showing GreyNoise data first  
-✅ **Comprehensive Documentation** (3 complete guides)  
-✅ **Automated Deployment** via `deploy-threat-intel.sh`
+- **GreyNoise API key** secured in `production.env`  
+- **IP Lookup Tool** for individual threat classification  
+- **GNQL Stats Tool** for aggregate attack analysis (10 presets)  
+- **Discord Integration** showing GreyNoise data first  
+- **Comprehensive Documentation** (3 complete guides)  
+- **Automated Deployment** via `deploy-threat-intel.sh`
 
-### What You Can Do
+### Capabilities
 
-🔍 **Classify attacks** - Mass scanner vs. targeted  
-📊 **Analyze patterns** - Top countries, actors, attack types  
-📈 **Generate reports** - For your AIT670 project  
-🎯 **Prioritize threats** - Focus on IPs NOT mass scanning  
-🛡️ **Inform defense** - Block top ASNs, countries if needed
+- **Classify attacks** - Mass scanner vs. targeted  
+- **Analyze patterns** - Top countries, actors, attack types  
+- **Generate reports** - For AIT670 project  
+- **Prioritize threats** - Focus on IPs NOT mass scanning  
+- **Inform defense** - Block top ASNs, countries if needed
 
-### One Command to Rule Them All
+### Deployment Command
 
 ```bash
-# Deploy everything
+# Deploy complete system
 cd "02-Deployment-Scripts" && ./deploy-threat-intel.sh
 
-# Then test
+# Test functionality
 ssh -p 2222 test@44.218.220.47
 
-# Check Discord for enriched alert with GreyNoise! 🎉
+# Verify Discord alert with GreyNoise enrichment
 ```
 
 ---
 
-**You're all set! GreyNoise is fully integrated and ready to help you distinguish internet noise from targeted attacks.** 🌐🔍
+**GreyNoise is fully integrated and operational for distinguishing internet noise from targeted attacks.**
 
-Your honeypot alerts will now show whether an attacker is:
-- 🔴 Part of a mass-scanning botnet (low priority)
-- 🎯 NOT mass scanning (HIGH PRIORITY - investigate!)
+Honeypot alerts will classify whether an attacker is:
+- Part of a mass-scanning botnet (low priority)
+- NOT mass scanning (HIGH PRIORITY - investigate)
 
-Run GNQL Stats for your project report to show impressive threat intelligence analysis! 📊
+Execute GNQL Stats for project report to demonstrate threat intelligence analysis capabilities.
