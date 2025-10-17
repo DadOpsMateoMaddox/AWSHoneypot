@@ -75,7 +75,7 @@ Based on research paper findings, expected outcomes include:
 - **400% increase** in attacker engagement
 - **5x longer** session times (537+ seconds vs 112)
 - **100% undetectable** by cowrie_detect.py
-- **Realistic enough** to deceive human attackers
+- **Sufficiently realistic** to deceive human attackers through system emulation
 - **6,574% increase** in deceptive port connections
 
 ## Complete Technology Stack:
@@ -127,7 +127,7 @@ bash deploy-ai-agent.sh
 ```
 
 This will add:
-- **6 interaction AI personas** (various behavioral patterns)
+- **6 interaction AI personas** (security analyst, end user, system administrator, concurrent user, technical support, junior administrator)
 - **AWS Bedrock integration** for real-time responses
 - **Extended engagement** as attackers interact with AI
 
