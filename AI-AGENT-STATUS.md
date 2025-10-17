@@ -1,67 +1,67 @@
-# 🤖 AI Agent Deployment Status
+# AI Agent Deployment Status
 
-## ✅ **AI Agents Deployed!**
+## AI Agents Deployed
 
-Your honeypot now has **comedy AI agents** ready to troll attackers!
+Honeypot configured with interactive AI agents for attacker engagement.
 
-## 🎭 **Current Status:**
+## Current Status:
 
-**✅ AI Agent Files:** Deployed to `/opt/cowrie/ai-agent/`  
-**✅ Dependencies:** boto3 installed  
-**✅ Fallback Responses:** Working perfectly!  
-**⚠️ AWS Bedrock:** Needs IAM permissions (using fallbacks for now)
+**AI Agent Files:** Deployed to `/opt/cowrie/ai-agent/`  
+**Dependencies:** boto3 installed  
+**Fallback Responses:** Operational  
+**AWS Bedrock:** Requires IAM permissions (using fallbacks currently)
 
-## 😂 **Fallback Responses Working:**
+## Fallback Response System:
 
-The AI agent is already responding with hilarious pre-programmed responses:
+AI agent provides pre-configured responses for common attacker commands.
 
-**When attacker runs `wget http://malware.com/payload`:**
-> "I see the problem. You need to download more RAM. Please hold."
+**Example response to `wget http://malware.com/payload`:**
+> "System verification required. Please provide authorization credentials."
 
-**When attacker runs `chmod +x malware`:**
-> "Can you help me send an email to my bridge club?"
+**Example response to `chmod +x malware`:**
+> "Security validation in progress. Please standby for authentication check."
 
-## 🎪 **6 Comedy Personas Available:**
+## 6 Interaction Personas Available:
 
-1. **Dave (Confused Admin)** - Thinks attackers are IT support
-2. **Karen (Paranoid User)** - Everything is a conspiracy  
-3. **Tyler (Eager Intern)** - Wants to learn hacking
-4. **xX_DarkLord_Xx (Fake Hacker)** - Starts arguments
-5. **Rajesh (Tech Support)** - Insists they called support
-6. **Ethel (Lost Grandma)** - Thinks this is Facebook
+1. **System Administrator** - Believes attacker is authorized IT support
+2. **Security Analyst** - Suspects unauthorized access
+3. **Junior Administrator** - Requests guidance on procedures
+4. **System User** - Appears as another authenticated user
+5. **Technical Support** - Responds as support personnel
+6. **End User** - Demonstrates limited system knowledge
 
-## 🔧 **How It Works:**
+## System Operation:
 
 **Without AWS Bedrock (Current):**
-- Uses pre-programmed hilarious responses
-- 70% chance of AI response per command
-- 25% chance of time-waster response
-- 5% chance of silence (realistic)
+- Uses pre-configured response library
+- 70% probability of AI response per command
+- 25% probability of delay response
+- 5% probability of silence (realistic behavior)
 
 **With AWS Bedrock (Optional):**
 - Dynamic AI-generated responses
-- Personas adapt to attacker behavior
-- Even more realistic and funny
-- Costs ~$0.000025 per response
+- Personas adapt to attacker behavior patterns
+- Enhanced realism and engagement
+- Costs approximately $0.000025 per response
 
-## 🎯 **Current Capabilities:**
+## Current Capabilities:
 
-**✅ Responds to suspicious commands:**
+**Responds to suspicious commands:**
 - wget, curl, chmod, bash, python
 - whoami, id, ps, netstat
 - cat, ls, cd, rm, mv
 
-**✅ Comedy responses include:**
-- "Oh thank goodness! Finally someone from IT!"
-- "I KNEW someone was watching me! Calling cyber police!"
-- "Wow cool! Can you teach me to hack?"
-- "This is MY server! I was here first!"
-- "Have you tried turning it off and on again?"
-- "Is this Facebook? Where are my grandchildren?"
+**Response examples include:**
+- "System diagnostics indicate anomalous activity. Please verify authorization."
+- "Unauthorized access detected. Security team has been notified."
+- "Please confirm this procedure is documented in the operations manual."
+- "Active session detected on this system. User conflict."
+- "Support ticket number required for service request."
+- "System access requires proper credentials. Unable to locate resource."
 
-## 🚀 **Enable AWS Bedrock (Optional):**
+## Enable AWS Bedrock (Optional):
 
-If you want dynamic AI responses instead of fallbacks:
+To activate dynamic AI responses:
 
 1. **Add Bedrock permissions to EC2 IAM role:**
 ```json
@@ -72,17 +72,17 @@ If you want dynamic AI responses instead of fallbacks:
 }
 ```
 
-2. **Cost:** ~$0.25 per 1M tokens = $0.000025 per response
+2. **Cost:** Approximately $0.25 per 1M tokens = $0.000025 per response
 3. **Budget:** $1/day = 40,000 AI responses
 
-## 🧪 **Test the AI Agents:**
+## Test AI Agents:
 
-**Manual test:**
+**Manual verification:**
 ```bash
 ssh admin@44.218.220.47 -p 2222
 # Password: admin123
 
-# Try these commands:
+# Execute test commands:
 wget http://malware.com/payload
 chmod +x malware
 whoami
@@ -90,50 +90,48 @@ cat /etc/passwd
 ps aux
 ```
 
-**Watch for responses like:**
-- "Wait, before you do that, can you help me with something?"
-- "ERROR: System requires verification. Please type the alphabet backwards."
-- "CAPTCHA REQUIRED: Please describe what you see in this ASCII art: ¯\\_(ツ)_/¯"
+**Expected response patterns:**
+- "System verification required. Please provide authorization credentials."
+- "Security validation in progress. Please standby for authentication check."
+- "System access requires multi-factor verification. Please provide secondary credentials."
 
-## 📊 **Integration Status:**
+## Integration Status:
 
 **Current Setup:**
-- ✅ AI agent scripts deployed
-- ✅ Fallback responses working
-- ✅ Command detection active
-- ⚠️ Cowrie integration pending (manual)
+- AI agent scripts deployed
+- Fallback responses operational
+- Command detection active
+- Cowrie integration pending (manual)
 
 **To fully integrate with Cowrie:**
-The AI responses need to be hooked into Cowrie's command processing. This requires modifying Cowrie's Python code to call the AI agent when commands are executed.
+AI responses require integration into Cowrie's command processing pipeline. This requires modifying Cowrie's Python code to invoke the AI agent during command execution.
 
-**For now:** The AI agent works standalone and can be tested manually!
+**Current state:** AI agent operational as standalone component for testing.
 
-## 🎭 **Your Complete Stack:**
+## Complete Technology Stack:
 
 ```
-🎭 Research-Grade Obfuscation ✅
-🗂️ Ultra-Realistic Filesystem ✅
-👥 15 Credential Pairs ✅
-🔐 Modern SSH Configuration ✅
-⚡ Performance Optimized ✅
-🔍 5-API Threat Intelligence ✅
-💬 Discord Integration ✅
-🤖 AI Comedy Agents ✅ (Fallback mode)
+Research-Grade Obfuscation: Operational
+Ultra-Realistic Filesystem: Operational
+15 Credential Pairs: Configured
+Modern SSH Configuration: Operational
+Performance Optimized: Operational
+5-API Threat Intelligence: Operational
+Discord Integration: Operational
+AI Interaction Agents: Operational (Fallback mode)
 ```
 
-## 🏆 **Result:**
+## Summary:
 
-Your honeypot is now a **world-class deception platform** with:
+Honeypot configured as enterprise-grade deception platform with:
 - Enterprise-grade obfuscation
 - Ultra-realistic filesystem
 - Comprehensive threat intelligence
-- **COMEDY GOLD AI responses!** 😂
-
-Attackers will be so confused they'll probably give up hacking and take up knitting! 🧶
+- Interactive AI response system
 
 ---
 
 **Status:** AI agents deployed with fallback responses  
-**Mode:** Comedy mode ACTIVE  
+**Mode:** Interactive response mode ACTIVE  
 **Cost:** $0 (using fallbacks)  
 **Upgrade:** Optional AWS Bedrock for dynamic AI

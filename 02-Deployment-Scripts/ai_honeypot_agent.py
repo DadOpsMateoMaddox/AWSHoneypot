@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-AI Honeypot Agent - Comedy Gold Edition
-Integrates with Cowrie to provide hilarious AI responses to attackers
+AI Honeypot Agent - Interactive Response System
+Integrates with Cowrie to provide automated responses to attackers
 """
 
 import boto3
@@ -15,43 +15,43 @@ from typing import Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 class HoneypotAIAgent:
-    """AI agent that trolls attackers with maximum comedy"""
+    """AI agent that engages attackers with interactive responses"""
     
     def __init__(self):
         self.bedrock = boto3.client('bedrock-runtime', region_name='us-east-1')
         self.session_contexts = {}  # Track ongoing conversations
         
-        # Comedy personas - each with different personalities
+        # Response personas - each with different interaction patterns
         self.personas = {
             'confused_admin': {
-                'name': 'Dave (Confused Admin)',
-                'personality': 'Genuinely thinks attacker is IT support',
-                'catchphrases': ['Oh thank goodness!', 'Finally someone to help!', 'I was so confused!']
+                'name': 'System Administrator',
+                'personality': 'Believes attacker is authorized IT support personnel',
+                'catchphrases': ['Access confirmed.', 'Please proceed with maintenance.', 'Awaiting authorization.']
             },
-            'paranoid_karen': {
-                'name': 'Karen (Paranoid User)', 
-                'personality': 'Thinks everything is a conspiracy',
-                'catchphrases': ['I KNEW IT!', 'This is exactly what they warned us about!', 'I\'m calling my manager!']
+            'paranoid_user': {
+                'name': 'Security Analyst', 
+                'personality': 'Suspects unauthorized access and security breach',
+                'catchphrases': ['Access logged.', 'Security protocol initiated.', 'Incident reported to management.']
             },
-            'helpful_newbie': {
-                'name': 'Tyler (Eager Intern)',
-                'personality': 'Wants to learn hacking from the attacker',
-                'catchphrases': ['Wow cool!', 'Can you teach me?', 'Is this how you become a hacker?']
+            'junior_admin': {
+                'name': 'Junior System Administrator',
+                'personality': 'Requests guidance on system operations',
+                'catchphrases': ['Please verify procedure.', 'Requesting confirmation.', 'Standard protocol?']
             },
-            'fake_hacker': {
-                'name': 'xX_DarkLord_Xx (Fake Hacker)',
-                'personality': 'Pretends to be another hacker, starts arguments',
-                'catchphrases': ['This is MY server!', 'I was here first!', 'Your skills are weak!']
+            'concurrent_user': {
+                'name': 'System User',
+                'personality': 'Appears to be another authenticated user on the system',
+                'catchphrases': ['This system is in use.', 'Already authenticated.', 'Session conflict detected.']
             },
-            'tech_support': {
-                'name': 'Rajesh (Fake Tech Support)',
-                'personality': 'Insists attacker called tech support',
-                'catchphrases': ['Thank you for calling!', 'Have you tried turning it off and on?', 'Please hold while I transfer you']
+            'support_tech': {
+                'name': 'Technical Support',
+                'personality': 'Responds as if attacker initiated support request',
+                'catchphrases': ['Support ticket received.', 'Diagnostic check required.', 'Please hold for verification.']
             },
-            'grandma': {
-                'name': 'Ethel (Lost Grandma)',
-                'personality': 'Thinks this is Facebook, asks about grandchildren',
-                'catchphrases': ['How do I post photos?', 'Where are my grandchildren?', 'Is this the Google?']
+            'basic_user': {
+                'name': 'End User',
+                'personality': 'Unfamiliar with system operations',
+                'catchphrases': ['System access required.', 'Unable to locate resource.', 'Request assistance.']
             }
         }
     
@@ -122,40 +122,40 @@ ATTACKER JUST TYPED: {attacker_input}
 
 INSTRUCTIONS:
 - Stay in character as {persona['name']}
-- Be hilarious and waste their time
-- Ask lots of questions to keep them engaged
-- Never break character or admit this is a honeypot
-- Use your catchphrases naturally
-- Get more ridiculous as troll level increases
-- Maximum 2-3 sentences
+- Engage with attacker to maintain session duration
+- Ask verification questions to sustain interaction
+- Never break character or reveal honeypot status
+- Use catchphrases naturally in context
+- Increase response complexity as troll level increases
+- Maintain professional tone, maximum 2-3 sentences
 
 RESPOND AS {persona['name']}:
 """
         
         # Add persona-specific context
         if context['persona'] == 'confused_admin':
-            base_prompt += "\n- Think they're IT support here to help you"
-            base_prompt += "\n- Ask them to fix random computer problems"
+            base_prompt += "\n- Treat as authorized IT support personnel"
+            base_prompt += "\n- Request assistance with system maintenance tasks"
             
-        elif context['persona'] == 'paranoid_karen':
-            base_prompt += "\n- Everything is a conspiracy or security threat"
-            base_prompt += "\n- Demand to speak to managers"
+        elif context['persona'] == 'paranoid_user':
+            base_prompt += "\n- Express concern about security and unauthorized access"
+            base_prompt += "\n- Request escalation to management"
             
-        elif context['persona'] == 'helpful_newbie':
-            base_prompt += "\n- Want to learn hacking from them"
-            base_prompt += "\n- Ask innocent questions about their methods"
+        elif context['persona'] == 'junior_admin':
+            base_prompt += "\n- Seek guidance on proper system procedures"
+            base_prompt += "\n- Ask for verification of administrative actions"
             
-        elif context['persona'] == 'fake_hacker':
-            base_prompt += "\n- Pretend you're also a hacker"
-            base_prompt += "\n- Start arguments about who's better"
+        elif context['persona'] == 'concurrent_user':
+            base_prompt += "\n- Indicate active session on the system"
+            base_prompt += "\n- Express confusion about multiple access attempts"
             
-        elif context['persona'] == 'tech_support':
-            base_prompt += "\n- Insist they called tech support"
-            base_prompt += "\n- Try to 'help' them with standard tech support responses"
+        elif context['persona'] == 'support_tech':
+            base_prompt += "\n- Respond as technical support personnel"
+            base_prompt += "\n- Provide standard technical support responses"
             
-        elif context['persona'] == 'grandma':
-            base_prompt += "\n- Think this is Facebook or email"
-            base_prompt += "\n- Ask about family and try to share photos"
+        elif context['persona'] == 'basic_user':
+            base_prompt += "\n- Indicate limited system knowledge"
+            base_prompt += "\n- Request help locating system resources"
         
         return base_prompt
     
@@ -163,38 +163,38 @@ RESPOND AS {persona['name']}:
         """Fallback responses if AI fails"""
         fallbacks = {
             'confused_admin': [
-                "Oh no! The computer is making beeping sounds again! Can you fix it?",
-                "Wait, are you the person from IT? I've been waiting all day!",
-                "I think I accidentally deleted the internet. Can you put it back?"
+                "System diagnostics indicate anomalous activity. Please verify authorization.",
+                "Maintenance window not scheduled. Please confirm support ticket number.",
+                "Configuration changes require approval. Please submit change request."
             ],
-            'paranoid_karen': [
-                "I KNEW someone was watching me! I'm calling the cyber police!",
-                "This is exactly what my nephew warned me about! HACKERS!",
-                "I want to speak to your manager RIGHT NOW!"
+            'paranoid_user': [
+                "Unauthorized access detected. Security team has been notified.",
+                "This activity will be logged and reviewed by security personnel.",
+                "Access violation reported. Please identify yourself."
             ],
-            'helpful_newbie': [
-                "Wow, you must be really smart! How did you learn to do that?",
-                "Is this how you become a hacker? Do I need special software?",
-                "Can you teach me? I promise I'll only use it for good!"
+            'junior_admin': [
+                "Please confirm this procedure is documented in the operations manual.",
+                "This action requires supervisor approval. Have you obtained clearance?",
+                "Standard protocol requires verification. Please provide authorization."
             ],
-            'fake_hacker': [
-                "Hey! This is MY server! I was here first!",
-                "Your hacking skills are weak. I've been in this system for months!",
-                "Nice try, script kiddie. Watch and learn from a REAL hacker!"
+            'concurrent_user': [
+                "Active session detected on this system. User conflict.",
+                "System resources currently allocated. Multiple access attempt noted.",
+                "Another user appears to be logged in. Session management required."
             ],
-            'tech_support': [
-                "Thank you for calling tech support! Have you tried turning it off and on again?",
-                "I see the problem. You need to download more RAM. Please hold.",
-                "Let me transfer you to my supervisor. *plays hold music*"
+            'support_tech': [
+                "Support ticket number required for service request.",
+                "Diagnostic check in progress. Please standby for system verification.",
+                "Technical support requires authorization code to proceed."
             ],
-            'grandma': [
-                "Is this Facebook? I can't find my grandchildren's photos.",
-                "How do I make the text bigger? These computers are so confusing!",
-                "Can you help me send an email to my bridge club?"
+            'basic_user': [
+                "System access requires proper credentials. Unable to locate resource.",
+                "File path not recognized. Please verify directory structure.",
+                "Command not understood. Please refer to system documentation."
             ]
         }
         
-        return random.choice(fallbacks.get(persona, ["Hello there! How can I help you today?"]))
+        return random.choice(fallbacks.get(persona, ["System ready. Awaiting input."]))
     
     def should_respond(self, command: str) -> bool:
         """Decide if AI should respond to this command"""
@@ -211,19 +211,19 @@ RESPOND AS {persona['name']}:
         return any(trigger in command.lower() for trigger in trigger_commands)
     
     def get_time_wasting_response(self, session_id: str) -> str:
-        """Generate responses designed to waste maximum time"""
+        """Generate responses designed to extend session duration"""
         
         time_wasters = [
-            "Wait, before you do that, can you help me with something? My computer keeps making this weird noise...",
-            "Hold on! I need to ask you 47 security questions first. Question 1: What's your mother's maiden name?",
-            "ERROR: System requires verification. Please type the alphabet backwards to continue.",
-            "SYSTEM NOTICE: Mandatory 5-minute coffee break initiated. Please wait...",
-            "Oh no! The system is updating Windows. This might take 3-4 hours. Please don't disconnect!",
-            "CAPTCHA REQUIRED: Please describe what you see in this ASCII art: ¯\\_(ツ)_/¯",
-            "System locked. Please sing 'Happy Birthday' to unlock. I'll wait...",
-            "ERROR 404: Hacking not found. Have you tried hacking something else?",
-            "NOTICE: This server is currently being used for a Zoom call with my grandmother. Please be quiet.",
-            "SYSTEM: Downloading more RAM... 1% complete... This may take several hours..."
+            "System verification required. Please provide authorization credentials.",
+            "Security validation in progress. Please standby for authentication check.",
+            "System access requires multi-factor verification. Please provide secondary credentials.",
+            "Configuration update in progress. System may be temporarily unavailable.",
+            "Maintenance window active. Please retry operation after completion.",
+            "Security token validation required. Please provide current session identifier.",
+            "System locked pending administrator approval. Awaiting authorization.",
+            "Access denied. Insufficient privileges for requested operation.",
+            "Network connectivity check required. Running diagnostic protocols.",
+            "System backup in progress. Operations temporarily restricted."
         ]
         
         return random.choice(time_wasters)
