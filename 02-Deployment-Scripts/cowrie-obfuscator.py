@@ -96,7 +96,7 @@ class CowrieObfuscator:
         # Rebuild filesystem
         self.rebuild_fs_pickle()
         
-        print("✅ Obfuscation complete! Honeypot should now be undetectable.")
+        print("Obfuscation complete. Honeypot detection resistance applied.")
     
     def obfuscate_version_uname(self):
         """Modify /proc/version to show realistic kernel"""
@@ -622,10 +622,10 @@ if __name__ == "__main__":
     print(f"   Kernel: {obfuscator.system_profile['kernel_version']}")
     print(f"   Ubuntu: {obfuscator.system_profile['ubuntu_version']}")
     
-    print("\n✅ Your honeypot should now be undetectable!")
+    print("\nHoneypot obfuscation applied successfully:")
     print("   - Removed default 'phil' user")
     print("   - Realistic system information")
     print("   - Non-default SSH algorithms")
     print("   - Production-like configuration")
-    print("\n🔄 Restart Cowrie to apply changes:")
+    print("\nRestart Cowrie to apply changes:")
     print("   sudo systemctl restart cowrie")
