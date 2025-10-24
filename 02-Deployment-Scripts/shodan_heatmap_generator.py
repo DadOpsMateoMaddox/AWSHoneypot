@@ -25,20 +25,22 @@ class ShodanHeatmapGenerator:
         except:
             pass
     
-    def get_attacker_ips_last_24h(self):
-        """Extract unique attacker IPs from last 24 hours"""
+    def get_attacker_ips_last_60_days(self):
+        """Extract unique attacker IPs from last 60 days"""
         ips = []
+        cutoff_date = (datetime.now() - timedelta(days=60)).strftime('%Y-%m-%d')
+        
         try:
             with open('/opt/cowrie/var/log/cowrie/cowrie.json', 'r') as f:
-                yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
                 for line in f:
-                    if yesterday in line:
-                        try:
-                            event = json.loads(line.strip())
-                            if 'src_ip' in event:
-                                ips.append(event['src_ip'])
-                        except:
-                            continue
+                    try:
+                        event = json.loads(line.strip())
+                        event_date = event.get('timestamp', '')[:10]
+                        
+                        if event_date >= cutoff_date and 'src_ip' in event:
+                            ips.append(event['src_ip'])
+                    except:
+                        continue
         except Exception as e:
             print(f"Error reading logs: {e}")
         
@@ -93,7 +95,7 @@ class ShodanHeatmapGenerator:
         cities = Counter([g['city'] for g in geolocations])
         
         stats = f"""
-**📊 24-Hour Attack Statistics**
+**📊 60-Day Attack Statistics**
 **Date:** {datetime.now().strftime('%Y-%m-%d')}
 
 **🌍 Top Countries:**
@@ -132,14 +134,14 @@ class ShodanHeatmapGenerator:
     
     def run_daily_generation(self):
         """Main execution - run daily at midnight"""
-        print(f"Starting daily heatmap generation at {datetime.now()}")
+        print(f"Starting heatmap generation at {datetime.now()}")
         
-        # Get attacker IPs
-        ips = self.get_attacker_ips_last_24h()
-        print(f"Found {len(ips)} unique attacker IPs in last 24 hours")
+        # Get attacker IPs from last 60 days
+        ips = self.get_attacker_ips_last_60_days()
+        print(f"Found {len(ips)} unique attacker IPs in last 60 days")
         
         if not ips:
-            print("No attackers found in last 24 hours")
+            print("No attackers found in last 60 days")
             return
         
         # Get geolocation data
