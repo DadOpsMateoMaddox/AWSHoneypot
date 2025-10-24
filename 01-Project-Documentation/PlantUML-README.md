@@ -25,6 +25,15 @@ This directory contains PlantUML diagrams that visualize the honeypot architectu
 - Illustrates VS Code and WSL integration
 - Demonstrates monitoring and maintenance procedures
 
+### 4. `operational-sequence.puml`
+**Complete Operational Flow**
+- End-to-end system lifecycle from attack to response
+- Detailed event processing and filtering workflow
+- Threat intelligence integration with GreyNoise
+- Real-time alerting through Discord webhooks
+- Team monitoring and forensic analysis procedures
+- Continuous operation and incident response flow
+
 ## How to View Diagrams
 
 ### Online Viewers
@@ -47,6 +56,7 @@ sudo apt install plantuml
 plantuml honeypot-architecture.puml
 plantuml attack-sequence-diagram.puml
 plantuml deployment-sequence.puml
+plantuml operational-sequence.puml
 ```
 
 ### Export Formats
