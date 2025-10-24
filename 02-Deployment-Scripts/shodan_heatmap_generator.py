@@ -13,7 +13,7 @@ import os
 
 class ShodanHeatmapGenerator:
     def __init__(self):
-        self.shodan_api_key = os.getenv('SHODAN_API_KEY', 'YOUR_SHODAN_API_KEY')
+        self.shodan_api_key = os.getenv('SHODAN_API_KEY', 'z9W9eDodEBro84JX6CqYCbe0JgMjP8qo')
         self.discord_webhook = None
         self.load_discord_config()
     
