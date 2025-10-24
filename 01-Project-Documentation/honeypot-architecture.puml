@@ -1,90 +1,124 @@
-@startuml Honeypot Architecture
-!theme aws-orange
-title AWS Honeypot Architecture - GMU AIT670 Project
+@startuml
+title AWS Honeypot Architecture - GMU AIT670 Cloud Computing
 
-!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v15.0/dist
-!includeurl AWSPuml/AWSCommon.puml
-!includeurl AWSPuml/NetworkingAndContentDelivery/VPC.puml
-!includeurl AWSPuml/SecurityIdentityAndCompliance/IAM.puml
-!includeurl AWSPuml/Compute/EC2.puml
-!includeurl AWSPuml/SecurityIdentityAndCompliance/CloudFormation.puml
-!includeurl AWSPuml/ManagementAndGovernance/CloudWatch.puml
+skinparam BackgroundColor #ffffff
+skinparam ComponentStyle uml2
+skinparam ArrowColor #FF9900
+skinparam BorderColor #232F3E
+skinparam FontColor #232F3E
 
-package "AWS Cloud" {
-    VPC(vpc, "GMU Honeypot VPC", "10.0.0.0/16")
-    
-    package "Public Subnet" {
-        EC2(ec2, "EC2 Instance", "Amazon Linux 2\n44.222.200.1")
-        
-        package "Honeypot Services" {
-            component "Cowrie SSH Honeypot" as cowrie {
-                [Port 2222] as p2222
-                [Fake Filesystem] as honeyfs
-                [Session Logs] as logs
-                [Command Capture] as commands
+package "AWS Cloud Region: us-east-1" #e8f4f8 {
+    package "VPC: 10.0.0.0/16" #d0e8f2 {
+        package "Public Subnet" #b8dce8 {
+
+            component "EC2 Instance\nAmazon Linux 2\nInstance: i-04d996c187504b547\nElastic IP: 44.218.220.47" as EC2
+
+            package "Cowrie SSH Honeypot" #ffeedd {
+                component "Cowrie SSH Service\nPort: 2222\nv2.5.0 Deception Engine\nSSH/Telnet Emulation" as Honeypot
+                component "Hardened Configuration\n/opt/cowrie/etc/cowrie.conf\nTimeout: 600s\nKey algorithms hardened\nJSON logging enabled\nThreat intelligence mode" as Config
+                component "Fake Filesystem\nRealistic directory structure\nDecoy user accounts\nBelievable config files" as FakeFS
+                component "Session Recording\nComplete event capture\nJSON-formatted logs\n/opt/cowrie/var/log/cowrie.json" as Recording
             }
-            
-            component "System Services" as system {
-                [SSH (Port 22)] as p22
-                [Python 3.8 Env] as python
-                [Log Rotation] as logrotate
+
+            package "Event Processing" #ffeecc {
+                component "Event Types\ncowrie.login.success\ncowrie.login.failed\ncowrie.command.input\ncowrie.session.connect\ncowrie.session.closed\nfile upload/download" as Events
+                component "IP Filtering\n/opt/cowrie/ip_whitelist.py\nTeam IP suppression\nThreat classification" as Filtering
+            }
+
+            package "Threat Intelligence" #ffffdd {
+                component "Discord Integration\ndiscord_config.json\nWebhook endpoint\nReal-time alerts" as Discord
+                component "Threat Scoring\nGreyNoise API\nThreat classification\nMetadata enrichment" as GreyNoise
+            }
+
+            package "System Access" #eeffee {
+                component "Administrative Access\nPort 22 - SSH\nKey-based authentication\nTeam member access" as AdminSSH
+                component "AWS Systems Manager\nSession Manager\nBrowser-based console\nNo SSH keys required" as SSM
             }
         }
     }
-    
-    CloudFormation(cf, "CloudFormation", "Infrastructure as Code")
-    CloudWatch(cw, "CloudWatch", "Log Monitoring")
-    IAM(iam, "Security Groups", "Network ACL")
+
+    component "CloudWatch Monitoring\nLog aggregation\nMetrics collection\nEvent streaming" as CloudWatch
+    component "IAM & Security\nService roles\nSecurity groups\nLeast privilege" as IAM
 }
 
-package "Internet" {
-    actor "Attackers" as attackers
-    actor "Security Researchers" as researchers
-    actor "Automated Bots" as bots
+package "External Integrations" #ffcccc {
+    component "Discord Webhook\nReal-time alerts\nEvent notifications\nTeam notifications" as DiscordWebhook
+    component "GitHub Repository\nDadOpsMateoMaddox/AWSHoneypot\nDeployment scripts\nInfrastructure code" as GitHub
 }
 
-package "Team Access" {
-    actor "Team Members" as team
-    component "WSL Environment" as wsl {
-        [SSH Client] as ssh
-        [VS Code] as vscode
-        [Private Keys] as keys
+package "Attack Surface" #ffdddd {
+    actor Attackers as "Threat Actors"
+    actor Bots as "Automated Scanners"
+    actor Researchers as "Security Researchers"
+}
+
+package "Team Environment" #eeffff {
+    actor TeamMembers as "Team Members"
+
+    package "WSL/Local Dev" #ddeeff {
+        component "Git Repository" as GitLocal
+        component "SSH Client" as SSHClient
+        component "AWS CLI & SSM Plugin" as AWSTools
     }
 }
 
-' Connections
-attackers --> p2222 : "Malicious SSH\nAttempts"
-researchers --> p2222 : "Penetration\nTesting"
-bots --> p2222 : "Automated\nScanning"
+' === Attack Flows ===
+Attackers --> Honeypot : Attack attempts
+Bots --> Honeypot : Scanning/enumeration
+Researchers --> Honeypot : Penetration testing
 
-team --> p22 : "Administrative\nAccess"
-team --> wsl
-wsl --> keys
-ssh --> ec2
+' === Honeypot Internal Flow ===
+Honeypot --> Config : Load settings
+Config --> FakeFS : Configure deception
+Honeypot --> FakeFS : Emulate env
+Honeypot --> Recording : Capture session
+Recording --> Events : Structure events
 
-p2222 --> honeyfs : "Fake Environment"
-p2222 --> logs : "Capture Activity"
-p2222 --> commands : "Log Commands"
+' === Event Filtering & Alerting ===
+Events --> Filtering : IP filtering
+Filtering --> Discord : Real-time alerts
+Discord --> DiscordWebhook : Send webhook
 
-ec2 --> cw : "Send Logs"
-cf --> ec2 : "Deploy & Configure"
-iam --> ec2 : "Security Rules"
+' === Threat Intelligence ===
+Events --> GreyNoise : Score threat
+GreyNoise --> Discord : Enrich metadata
 
-note right of cowrie
-  Cowrie captures:
-  • Login attempts
-  • Commands executed
-  • File downloads
-  • Session recordings
-  • Network connections
+' === Monitoring ===
+Recording --> CloudWatch : Log stream
+Events --> CloudWatch : Event stream
+
+' === Team Access ===
+TeamMembers --> SSHClient : SSH ops
+TeamMembers --> AWSTools : AWS access
+SSHClient --> AdminSSH : Remote shell
+AWSTools --> SSM : Session manager
+AdminSSH --> EC2 : Shell access
+SSM --> EC2 : Console access
+
+' === Deployment Pipeline ===
+TeamMembers --> GitLocal : Version control
+GitLocal --> GitHub : Push/pull
+GitHub --> EC2 : Deploy scripts
+
+' === Notes ===
+note right of Honeypot
+Cowrie SSH Honeypot\n- Emulates Linux shell\n- Interactive deception\n- Session tracking\n- Configurable credentials
 end note
 
-note left of honeyfs
-  Fake filesystem contains:
-  • Realistic directory structure
-  • Fake sensitive files
-  • Believable user accounts
-  • Decoy applications
+note right of Config
+Configuration Hardening\n- Optimized SSH algorithms\n- Timeout: 600s\n- JSON logging\n- Plugins: Discord, CloudWatch\n- Threat intel integration
+end note
+
+note left of Events
+Event Classification\n- Authentication attempts\n- Command input\n- File operations\n- Network connections\n- Session lifecycle
+end note
+
+note bottom of Discord
+Alert Pipeline\nFilter → Enrich → Notify\nReal-time threat alerts
+end note
+
+note right of TeamMembers
+Access Methods\n1. AWS SSM (browser-based)\n2. SSH with keypair\n3. EC2 Instance Connect
 end note
 
 @enduml
