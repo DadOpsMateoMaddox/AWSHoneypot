@@ -114,7 +114,7 @@ Event Classification\n- Authentication attempts\n- Command input\n- File operati
 end note
 
 note bottom of Discord
-Alert Pipeline\nFilter → Enrich → Notify\nReal-time threat alerts
+Alert Pipeline\nFilter -> Enrich -> Notify\nReal-time threat alerts
 end note
 
 note right of TeamMembers
