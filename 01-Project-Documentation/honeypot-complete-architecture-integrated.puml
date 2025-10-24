@@ -1,0 +1,234 @@
+@startuml honeypot-complete-architecture
+title AWS Honeypot Architecture - Complete System (All Components Integrated)
+
+skinparam BackgroundColor #ffffff
+skinparam ComponentStyle uml2
+skinparam ArrowColor #FF9900
+skinparam BorderColor #232F3E
+skinparam FontColor #232F3E
+
+package "AWS Cloud Region: us-east-1a" #e8f4f8 {
+    package "VPC: 10.0.0.0/16" #d0e8f2 {
+        package "Public Subnet" #b8dce8 {
+
+            component "EC2 Instance i-04d996c187504b547\nAmazon Linux 2\nElastic IP: 44.218.220.47\n2 vCPU, 1GB RAM" as EC2
+
+            package "Honeypot Services" #ffeedd {
+                component "Cowrie SSH Honeypot\nPort: 2222\nv2.5.0 Deception Engine\nSSH/Telnet Emulation\nInteractive sessions" as Honeypot
+                
+                component "Hardened Configuration\n/opt/cowrie/etc/cowrie.conf\nTimeout: 600s\nOptimized SSH algorithms\nJSON logging enabled\nThreat intel plugins" as Config
+                
+                component "Fake Filesystem\nRealistic dir structure\nDecoy accounts (root/admin)\nFake API credentials\nFake SSH keys" as FakeFS
+                
+                component "Session Recording\nJSON-formatted events\n/opt/cowrie/var/log/\ncowrie.json\nComplete audit trail" as Recording
+                
+                component "Troll Response Engine\nAI-driven engagement\nResponse generation\n100% response rate\nPersona selection" as TrollResponder
+            }
+
+            package "AI Engagement Engine" #ffccdd {
+                component "Ultimate Troll Agent\n/opt/cowrie/ai-agent/\nultimate_troll_agent.py\n6 Comedy Personas\nPhilosophy Bot\nRiddle Master\nDad Jokes Engine\nConspiracy Theorist\nFortune Teller\nMotivational Speaker" as TrollAgent
+                
+                component "Troll Integration\ntroll_integration.py\n10+ Time-Wasting Tactics\nConversation Hooks\nEscalating Engagement\nAttacker Retention\nPerformance Metrics" as TrollIntegration
+                
+                component "Enhanced Discord Monitor\nenhanced_discord_monitor.py\nReal-time troll responses\nEngagement metrics\nTime-waste tracking\nPersona statistics" as EnhancedDiscord
+            }
+
+            package "Event Processing & Analysis" #ffeecc {
+                component "Event Classification\nAuthentication attempts\nCommand input capture\nFile operations logging\nNetwork connections\nSession lifecycle events\nTroll engagement events\nTime-waste minutes" as Events
+                
+                component "IP Filtering & Whitelist\n/opt/cowrie/ip_whitelist.py\nTeam IP suppression\nThreat classification\nGeographic tagging\nAttacker profiling" as Filtering
+                
+                component "Geographic Intelligence\nIP-to-Location mapping\nAttack origin visualization\nHeatmap generation\nRegional threat patterns\nAttacker distribution" as GeoIntel
+            }
+
+            package "Threat Intelligence & Analysis" #ffffdd {
+                component "GreyNoise API Integration\nReal-time threat scoring\nIP reputation lookup\nThreat classification\nMetadata enrichment\nCVE correlation" as GreyNoise
+                
+                component "Discord Webhook Integration\ndiscord_config.json\nWebhook endpoint\nAlert formatting\nReal-time notifications\nTeam coordination" as Discord
+                
+                component "Threat Intelligence Dashboard\nAttacker heatmaps\nGeographic distribution\nAttack statistics\nPersona performance\nTime-waste metrics" as Dashboard
+            }
+
+            package "System Access & Management" #eeffee {
+                component "Administrative Access\nPort 22 - SSH\nKey-based authentication\nTeam SSH keys\nAccess logging\nActivity audit trail" as AdminSSH
+                
+                component "AWS Systems Manager\nSession Manager\nBrowser-based console\nNo SSH keys required\nEncrypted sessions\nFull audit trail" as SSM
+            }
+
+            package "Monitoring & Observability" #ffffee {
+                component "CloudWatch Logs\nLog aggregation\nJSON log streaming\nCowrie event storage\nLong-term retention\nSearchable archive" as CloudWatch
+                
+                component "CloudWatch Metrics\nAttack frequency\nAuthentication attempts\nSession duration\nTroll engagement depth\nAttacker retention rates" as Metrics
+                
+                component "CloudWatch Alarms\nHigh-threat detection\nAnomaly alerting\nThreshold monitoring\nAutomated notifications" as Alarms
+            }
+        }
+    }
+
+    component "IAM & Security\nService roles\nSecurity groups\nLeast privilege\nEncryption in transit" as IAM
+}
+
+package "Geographic & Threat Intelligence" #ffffee {
+    component "IP Geolocation Data\nMaxMind GeoIP2\nAttacker origin country\nCity-level accuracy\nISP information\nASN lookup" as GeoData
+    
+    component "Attack Heatmaps\nGlobal distribution map\nAttack frequency by region\nThreat actor clustering\nGeographic risk profile\nTime zone patterns" as Heatmap
+}
+
+package "External Integrations" #ffcccc {
+    component "Discord Webhook\nReal-time alerts\nTroll engagement notifications\nAttack notifications\nTeam notifications\nCustom formatting" as DiscordWebhook
+    
+    component "GitHub Repository\nDadOpsMateoMaddox/AWSHoneypot\nDeployment automation\nInfrastructure code\nDocumentation\nVersion control" as GitHub
+    
+    component "GreyNoise Intelligence API\nThreat data enrichment\nIP reputation\nHoneypot monitoring\nCVE tracking\nShodan integration" as GreyNoiseAPI
+}
+
+package "Attack Surface & Threat Actors" #ffdddd {
+    actor AttackersSG as "🎯 Asian Threat Actors\n(Singapore/Hong Kong)"
+    actor AttackersChina as "🎯 Chinese Threat Actors\n(Beijing/Shenzhen)"
+    actor AttackersDO as "🎯 Cloud Infrastructure\nAttackers (DigitalOcean)"
+    actor AttackersTT as "🎯 Caribbean Threats\n(Trinidad & Tobago)"
+    actor Bots as "🤖 Automated Scanners\n(Botnets/Mass Scanners)"
+    actor Researchers as "🔬 Security Researchers\n(Penetration Testing)"
+}
+
+package "Team Environment" #eeffff {
+    actor TeamMembers as "👥 Team Members\n(5 authorized)"
+
+    package "Local Development Environment" #ddeeff {
+        component "Git Repository\nLocal clone\nBranch management\nVersion control" as GitLocal
+        
+        component "SSH Client\nTerminal access\nKey management\nSession handling" as SSHClient
+        
+        component "AWS CLI & Tools\nSSM Session Manager\nCloudWatch queries\nDeployment scripts" as AWSTools
+        
+        component "Heatmap Viewer\nLocal HTML rendering\nInteractive map\nAttack visualization" as HeatmapViewer
+    }
+}
+
+' === Attack Flows ===
+AttackersSG --> Honeypot : SSH attacks (port 2222)\nGeographic: Singapore, Hong Kong
+AttackersChina --> Honeypot : Brute force attempts\nGeographic: Beijing, Shenzhen
+AttackersDO --> Honeypot : Scanning/enumeration\nGeographic: DigitalOcean infra
+AttackersTT --> Honeypot : Network probing\nGeographic: Trinidad & Tobago
+Bots --> Honeypot : Mass scanning\nAutomated reconnaissance
+
+' === Honeypot Internal Processing ===
+Honeypot --> Config : Load hardened settings
+Config --> FakeFS : Configure deception layer
+Honeypot --> FakeFS : Emulate environment
+Honeypot --> Recording : Capture all events
+Recording --> Events : Create event objects
+
+' === Event Processing ===
+Events --> Filtering : Apply IP whitelist
+Filtering --> GeoIntel : Extract location data
+GeoIntel --> Heatmap : Generate heatmap
+
+' === AI Troll Engagement Pipeline ===
+Recording --> TrollResponder : Forward session data
+TrollResponder --> TrollIntegration : Send for processing
+TrollIntegration --> TrollAgent : Request engagement
+TrollAgent --> TrollResponder : Generate response
+TrollResponder --> Honeypot : Deliver to attacker
+TrollResponder --> EnhancedDiscord : Log metrics
+
+' === Threat Intelligence Pipeline ===
+Events --> GreyNoise : Score threat level
+Filtering --> GreyNoise : Attach IP/location
+GreyNoise --> Discord : Enrich alert data
+GeoIntel --> Dashboard : Update heatmap
+EnhancedDiscord --> Discord : Send engagement stats
+
+' === Discord Notifications ===
+Discord --> DiscordWebhook : Threat alerts
+EnhancedDiscord --> DiscordWebhook : Troll metrics
+Dashboard --> DiscordWebhook : Periodic reports
+
+' === Monitoring & Logging ===
+Recording --> CloudWatch : Stream JSON logs
+Events --> CloudWatch : Event archive
+Events --> Metrics : Calculate statistics
+Metrics --> Alarms : Threshold checks
+
+' === Team Access & Management ===
+TeamMembers --> SSHClient : SSH operations
+TeamMembers --> AWSTools : AWS access
+SSHClient --> AdminSSH : Remote shell
+AWSTools --> SSM : Session manager
+AdminSSH --> EC2 : Shell access
+SSM --> EC2 : Browser console
+AWSTools --> CloudWatch : Query logs
+HeatmapViewer --> Dashboard : View heatmaps
+
+' === Geographic Intelligence ===
+GeoData --> GeoIntel : Location lookup
+GeoData --> Heatmap : Map coordinates
+
+' === External Integrations ===
+GitHub --> EC2 : Deploy scripts
+GreyNoiseAPI --> GreyNoise : Threat data
+DiscordWebhook --> TeamMembers : Notifications
+
+' === Version Control & Deployment ===
+TeamMembers --> GitLocal : Version control
+GitLocal --> GitHub : Push/pull updates
+GitHub --> EC2 : Deploy via automation
+
+' === Notes ===
+note right of Honeypot
+COWRIE SSH HONEYPOT
+Port: 2222 | v2.5.0
+Interactive Linux shell
+Session deception
+Attack capture
+Threat emulation
+end note
+
+note right of TrollAgent
+ULTIMATE TROLL AGENT
+6 Personas deployed
+100% response rate
+10+ engagement tactics
+Time-wasting focus
+Attacker retention
+Academic research
+end note
+
+note right of Events
+EVENT CLASSIFICATION
+authentication (success/fail)
+command execution
+file operations
+network connections
+troll engagement
+time-waste minutes
+end note
+
+note right of Dashboard
+ATTACK INTELLIGENCE
+Real-time heatmaps
+Geographic distribution
+Origin clustering
+Attack frequency
+Threat actor profiling
+Troll engagement stats
+end note
+
+note bottom of GeoIntel
+GEOGRAPHIC INTELLIGENCE
+Attack origins: 6 countries
+Primary: Singapore, Hong Kong,
+China (Beijing/Shenzhen),
+North Bergen (US), Trinidad & Tobago
+end note
+
+note right of Alarms
+AUTOMATED MONITORING
+High-threat detection
+Threshold alerts
+Pattern recognition
+Anomaly detection
+Real-time notifications
+end note
+
+@enduml

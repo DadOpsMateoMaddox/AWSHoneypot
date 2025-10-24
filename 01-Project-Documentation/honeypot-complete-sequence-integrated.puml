@@ -1,0 +1,249 @@
+@startuml honeypot-complete-sequence
+title Complete Honeypot Threat Intelligence Pipeline with All Components
+
+skinparam FontColor #232F3E
+skinparam BorderColor #FF9900
+skinparam ArrowColor #232F3E
+skinparam SequenceActorBorderColor #FF9900
+skinparam SequenceActorBackgroundColor #FFF5E6
+skinparam SequenceLifeLineBackgroundColor #E8F4F8
+skinparam SequenceParticipantBorderColor #FF9900
+skinparam SequenceParticipantBackgroundColor #FFF5E6
+
+participant Attacker as "🎯 Threat Actor\n(Global Location)"
+participant Honeypot as "Honeypot\nPort 2222"
+participant Recording as "Session\nRecorder"
+participant TrollResponder as "Troll Response\nEngine"
+participant TrollAgent as "Ultimate Troll\nAgent"
+participant Events as "Event\nClassifier"
+participant GeoIntel as "Geographic\nIntelligence"
+participant Filtering as "IP Filter &\nThreat Score"
+participant GreyNoise as "GreyNoise\nAPI"
+participant Dashboard as "Attack\nDashboard"
+participant EnhancedDiscord as "Enhanced\nDiscord Monitor"
+participant Discord as "Discord\nWebhook"
+participant Team as "👥 Team\nMonitors"
+participant CloudWatch as "CloudWatch\nLogs/Metrics"
+
+group "Phase 1: Attack Initiation & Deception Setup"
+    Attacker --> Honeypot: SSH connect attempt\n(attacker_ip:random_port → 44.218.220.47:2222)
+    activate Honeypot
+    
+    Honeypot --> Honeypot: Load hardened config\n(/opt/cowrie/etc/cowrie.conf)
+    Honeypot --> Recording: Initialize session\n(assign session_id)
+    activate Recording
+    
+    Honeypot --> Honeypot: Authenticate attacker\n(accept any credentials)
+    
+    note right of Honeypot
+        Deception Layer Activated:
+        - SSH handshake simulation
+        - Fake shell prompt
+        - Realistic responses
+        - Hidden attack tracking
+    end note
+end
+
+group "Phase 2: Attacker Commands & Parallel Processing"
+    Attacker --> Honeypot: Execute commands\n(whoami, id, ls, cat /etc/passwd, etc.)
+    
+    par Parallel: Threat Analysis AND Troll Engagement
+        Honeypot --> Recording: Capture all keystrokes\n& responses
+        Recording --> Events: Create event objects\n(JSON formatted)
+        
+        Honeypot --> TrollResponder: Forward session data\n(command context)
+        TrollResponder --> TrollAgent: Request engagement\nfor this attacker
+        activate TrollAgent
+    end
+    
+    activate Events
+end
+
+group "Phase 3: AI Troll Engagement"
+    activate TrollResponder
+    
+    TrollAgent --> TrollAgent: Select persona\n(6 options: Philosophy Bot,\nRiddle Master, Dad Jokes,\nConspiracy, Fortune, Motivation)
+    
+    TrollAgent --> TrollAgent: Analyze command\n(determine engagement hook)
+    
+    TrollAgent --> TrollResponder: Generate response\n(comedy, confusion, time-waste)
+    deactivate TrollAgent
+    
+    TrollResponder --> Honeypot: Deliver response\n(appears as system output)
+    
+    Honeypot --> Attacker: 😈 Troll Response\n(keeps attacker engaged)
+    
+    TrollResponder --> EnhancedDiscord: Log engagement\n(persona, tactics, time_wasted)
+    activate EnhancedDiscord
+    
+    note right of TrollResponder
+        Engagement Tactics:
+        - Philosophy discussions
+        - Riddle challenges
+        - Dad jokes
+        - Conspiracy theories
+        - Fortune telling
+        - Motivational speeches
+        
+        Goal: Maximize time wasted
+        per attacker session
+    end note
+end
+
+group "Phase 4: Event Classification & Enrichment"
+    deactivate Recording
+    
+    Events --> Events: Classify event types:\n- login.success/failed\n- command.input\n- troll_engagement_sent\n- time_wasted_minutes
+    
+    Events --> GeoIntel: Extract attacker IP
+    activate GeoIntel
+    
+    Events --> Filtering: Check IP whitelist\n(suppress team IPs)
+    activate Filtering
+end
+
+group "Phase 5: Geographic Intelligence"
+    GeoIntel --> GeoIntel: Geolocate IP\n(MaxMind GeoIP2 lookup)
+    
+    GeoIntel --> GeoIntel: Extract location:\n- Country\n- City\n- ISP/ASN\n- Provider name
+    
+    GeoIntel --> Dashboard: Update heatmap\n(add marker to map)
+    activate Dashboard
+    
+    note right of GeoIntel
+        Current Attack Origins:
+        • Singapore (Alibaba Cloud)
+        • Hong Kong (Alibaba Cloud)
+        • Shenzhen, China (Bird Cloud)
+        • Beijing, China (xhxt tech)
+        • North Bergen, US (DigitalOcean)
+        • Trinidad & Tobago (Columbus Comms)
+    end note
+end
+
+group "Phase 6: Threat Scoring & Analysis"
+    Filtering --> Filtering: Evaluate threat level:\n- Team IP: Suppress\n- Known malicious: High\n- Unknown: Standard\n- Cloud provider: Flag
+    
+    Filtering --> GreyNoise: Request threat scoring\n(IP, attack pattern)
+    activate GreyNoise
+    
+    GreyNoise --> GreyNoise: Query threat database\n- IP reputation\n- Known CVEs\n- Attack history\n- Risk classification
+    
+    GreyNoise --> Filtering: Return threat metadata\n(severity, category, confidence)
+end
+
+group "Phase 7: Alert Generation & Team Notification"
+    deactivate Filtering
+    deactivate GreyNoise
+    
+    Events --> Discord: Format comprehensive alert
+    activate Discord
+    
+    EnhancedDiscord --> Discord: Attach troll metrics\n(persona used, time wasted,\nresponse count)
+    
+    Dashboard --> Discord: Include heatmap update\n(geographic coordinates)
+    
+    alt 🔴 HIGH-THREAT + ACTIVE TROLL ENGAGEMENT
+        Discord --> Discord: Flag: CRITICAL
+        Discord --> Team: Send detailed webhook\nwith threat + engagement data
+    else 🟡 MEDIUM-THREAT + TROLLING ACTIVE
+        Discord --> Discord: Flag: WARNING
+        Discord --> Team: Send alert with metrics
+    else 🟢 LOW-THREAT + TROLL FUN
+        Discord --> Discord: Flag: INFO
+        Discord --> Team: Send notification
+        Discord --> Team: Schedule batch report
+    end
+    
+    activate Team
+    
+    note right of Discord
+        DISCORD ALERT FORMAT:
+        Threat Level + 😈 Troll Status
+        Attacker IP + Location
+        Persona Used + Time Wasted
+        Commands Executed
+        Engagement Depth
+        Next Engagement Hook
+    end note
+end
+
+group "Phase 8: Team Review & Monitoring"
+    Team --> Team: Analyze threat + engagement
+    Team --> Team: Review troll metrics
+    Team --> Team: Monitor attacker retention
+    Team --> Team: Log observations
+    Team --> Dashboard: View live heatmap
+    Team --> CloudWatch: Query historical logs
+    activate CloudWatch
+    deactivate Team
+end
+
+group "Phase 9: Attacker Escalation & Continued Engagement"
+    deactivate TrollResponder
+    
+    par Continued Loop
+        Attacker --> Honeypot: Try more commands\n(frustrated by troll)
+        Honeypot --> Recording: Record continued attempts
+        Recording --> Events: More events
+        Events --> Filtering: Re-evaluate
+        note right of Attacker
+            Attacker likely:
+            - Confused by responses
+            - Intrigued by troll
+            - Spending MORE time
+            - Executing more commands
+            - Attempting escalation
+        end note
+    end
+end
+
+group "Phase 10: Long-term Monitoring & Archive"
+    Recording --> CloudWatch: Stream JSON logs\n(complete session)
+    
+    Events --> CloudWatch: Archive all events
+    
+    CloudWatch --> CloudWatch: Store in Log Insights\n(searchable, long-term retention)
+    
+    deactivate CloudWatch
+    
+    Dashboard --> Dashboard: Update statistics:\n- Attacks by country\n- Troll performance\n- Time-waste totals\n- Persona effectiveness\n- Attacker retention curves
+    
+    deactivate Dashboard
+    
+    EnhancedDiscord --> EnhancedDiscord: Generate daily report:\n- Total engagements\n- Time wasted\n- Best personas\n- Attack patterns\n- Geographic insights
+    
+    deactivate EnhancedDiscord
+    deactivate Discord
+end
+
+group "Cycle Repeat"
+    deactivate Honeypot
+    
+    note over Attacker, CloudWatch
+        COMPLETE CYCLE FLOW:
+        
+        1. Attacker connects to deception layer
+        2. Session captured in real-time
+        3. AI troll agent engages in parallel
+        4. Attacker distracted by comedy/confusion
+        5. Commands logged and analyzed
+        6. Geographic origin mapped
+        7. Threat scored by API
+        8. Team alerted in real-time
+        9. Engagement metrics tracked
+        10. Data archived for research
+        11. Heatmap updated live
+        12. Time wasted instead of attacking
+        
+        RESEARCH VALUE:
+        - Attacker behavior analysis
+        - Engagement psychology
+        - Time-waste statistics
+        - Geographic threat distribution
+        - Persona effectiveness
+        - Retention curves
+    end note
+end
+
+@enduml
