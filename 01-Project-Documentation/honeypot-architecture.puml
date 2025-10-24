@@ -18,6 +18,7 @@ package "AWS Cloud Region: us-east-1" #e8f4f8 {
                 component "Hardened Configuration\n/opt/cowrie/etc/cowrie.conf\nTimeout: 600s\nKey algorithms hardened\nJSON logging enabled\nThreat intelligence mode" as Config
                 component "Fake Filesystem\nRealistic directory structure\nDecoy user accounts\nBelievable config files" as FakeFS
                 component "Session Recording\nComplete event capture\nJSON-formatted logs\n/opt/cowrie/var/log/cowrie.json" as Recording
+                component "Troll Response Engine\nAI-driven attacker engagement\nResponse generation layer\n100% response rate" as TrollResponder
             }
 
             package "Event Processing" #ffeecc {
@@ -28,6 +29,12 @@ package "AWS Cloud Region: us-east-1" #e8f4f8 {
             package "Threat Intelligence" #ffffdd {
                 component "Discord Integration\ndiscord_config.json\nWebhook endpoint\nReal-time alerts" as Discord
                 component "Threat Scoring\nGreyNoise API\nThreat classification\nMetadata enrichment" as GreyNoise
+            }
+
+            package "AI Engagement Engine" #ffccdd {
+                component "Ultimate Troll Agent\n/opt/cowrie/ai-agent/\nultimate_troll_agent.py\n6 comedy personas" as TrollAgent
+                component "Troll Integration\ntroll_integration.py\n10+ time-wasting tactics\nEscalating engagement" as TrollIntegration
+                component "Enhanced Discord Monitor\nenhanced_discord_monitor.py\nReal-time troll responses\nAttacker engagement metrics" as EnhancedDiscord
             }
 
             package "System Access" #eeffee {
@@ -83,6 +90,14 @@ Discord --> DiscordWebhook : Send webhook
 Events --> GreyNoise : Score threat
 GreyNoise --> Discord : Enrich metadata
 
+' === AI Troll Engagement ===
+Recording --> TrollResponder : Session data
+TrollResponder --> TrollIntegration : Generate response
+TrollIntegration --> TrollAgent : Select persona
+TrollAgent --> Honeypot : Deliver engagement
+TrollResponder --> EnhancedDiscord : Log engagement
+EnhancedDiscord --> Discord : Send troll metrics
+
 ' === Monitoring ===
 Recording --> CloudWatch : Log stream
 Events --> CloudWatch : Event stream
@@ -115,6 +130,14 @@ end note
 
 note bottom of Discord
 Alert Pipeline\nFilter -> Enrich -> Notify\nReal-time threat alerts
+end note
+
+note right of TrollAgent
+Ultimate Troll Agent (DEPLOYED)\n- 6 Comedy Personas\n- Philosophy Bot, Riddle Master\n- Dad Jokes Engine, Conspiracy Theorist\n- Fortune Teller, Motivational Speaker\n- 100% Response Rate\n- Escalating Engagement
+end note
+
+note right of TrollIntegration
+Troll Engagement Strategy\n- 10+ Time-Wasting Tactics\n- Conversation Hooks\n- Deep Engagement Chains\n- Attacker Retention Focus\n- Performance Metrics\n- Discord Notifications
 end note
 
 note right of TeamMembers

@@ -1,0 +1,125 @@
+@startuml honeypot-threat-sequence
+title Honeypot Threat Intelligence Pipeline - Attack to Discord Alert Sequence
+
+skinparam FontColor #232F3E
+skinparam BorderColor #FF9900
+skinparam ArrowColor #232F3E
+skinparam SequenceActorBorderColor #FF9900
+skinparam SequenceActorBackgroundColor #FFF5E6
+skinparam SequenceLifeLineBackgroundColor #E8F4F8
+skinparam SequenceParticipantBorderColor #FF9900
+skinparam SequenceParticipantBackgroundColor #FFF5E6
+
+actor Attacker as "🎯 Threat Actor"
+participant Honeypot as "Honeypot\n(Port 2222)"
+participant Recording as "Session\nRecorder"
+participant TrollResponder as "Troll Response\nEngine"
+participant TrollAgent as "Ultimate Troll\nAgent"
+participant Events as "Event\nClassifier"
+participant Filtering as "IP\nFilter"
+participant GreyNoise as "GreyNoise\nThreat API"
+participant Discord as "Discord\nIntegration"
+actor Team as "👥 Team\nMonitors"
+
+group "1. Attack Phase"
+    Attacker --> Honeypot: SSH connect\n(44.218.220.47:2222)
+    activate Honeypot
+    Honeypot --> Honeypot: Load config\n(Hardened settings)
+    Honeypot --> Recording: Initialize\nsession
+    activate Recording
+    Attacker --> Honeypot: Execute commands\n(whoami, id, cat /etc/passwd)
+    Honeypot --> Recording: Capture session\nevents
+end
+
+group "2. Event Processing"
+    Recording --> Events: Create event objects\n(JSON-formatted)
+    activate Events
+    deactivate Recording
+    Events --> Events: Classify event types:\n- login.success\n- login.failed\n- command.input
+end
+
+group "3. IP Filtering & Enrichment"
+    Events --> Filtering: Check IP\nagainst whitelist
+    activate Filtering
+    Filtering --> Filtering: Evaluate threat score
+    Filtering --> GreyNoise: Request threat\nintelligence
+    activate GreyNoise
+    GreyNoise --> GreyNoise: Query threat database
+    GreyNoise --> Filtering: Return threat\nmetadata
+    note right of Filtering
+        IP Classification:
+        - Team IPs: Suppressed
+        - Known malicious: High priority
+        - Unknown: Standard priority
+    end note
+end
+
+group "4. Threat Scoring & Analysis"
+    deactivate Filtering
+    Events --> GreyNoise: Enrich event with\nthreat score
+    activate AIAgent
+    GreyNoise --> AIAgent: Pass scored\nevents (Phase 2)
+    note right of AIAgent
+        AI Analysis Phase 2 (Future):
+        - GPT-4: Attack pattern recognition
+        - MITRE ATT&CK: Technique mapping
+        - Risk assessment
+        - Recommendation generation
+    end note
+    deactivate AIAgent
+end
+
+group "5. Alert Generation & Delivery"
+    deactivate GreyNoise
+    Events --> Discord: Format alert\nmessage
+    activate Discord
+    
+    alt High-Priority Threat
+        Discord --> Discord: Flag: 🔴 CRITICAL
+        Discord --> Team: Send webhook alert\nwith full context
+    else Medium Priority
+        Discord --> Discord: Flag: 🟡 WARNING
+        Discord --> Team: Send webhook alert
+    else Low Priority
+        Discord --> Discord: Flag: 🟢 INFO
+        Discord --> Team: Send webhook alert\n(batch or suppress)
+    end
+    
+    activate Team
+    Team --> Team: Review alert
+    Team --> Honeypot: Analysis & response
+    deactivate Team
+end
+
+group "6. Monitoring & CloudWatch"
+    Events --> Events: Archive events
+    Recording --> Events: Upload to\nCloudWatch Logs
+    activate Events
+    note right of Events
+        CloudWatch Integration:
+        - Real-time log aggregation
+        - Searchable event history
+        - Metrics collection
+        - Long-term retention
+    end note
+    deactivate Events
+end
+
+note over Attacker, Team
+    Complete Flow Summary:
+    Attack Pattern → Event Capture → Classification → 
+    Threat Scoring → Discord Alert → Team Response → 
+    CloudWatch Archive
+end note
+
+note right of Honeypot
+    Hardened Configuration:
+    • SSH timeout: 600s
+    • Key algorithms: Optimized
+    • JSON logging: Enabled
+    • Discord plugin: Active
+    • Threat intelligence: Integrated
+    • Troll Agent: ACTIVE ✅
+end note
+
+@enduml

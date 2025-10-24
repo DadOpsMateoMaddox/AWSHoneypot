@@ -1,93 +1,46 @@
-# AWS Honeypot Project - Git Ignore File
-# Excludes all sensitive information and secrets
+# Private team-specific files
+.private/
+**/Emmanuel-*.md
+**/*-PCAP-*.md
 
-# SSH Keys and Certificates
+# AWS Credentials
 *.pem
 *.key
-*.crt
-*.p12
-*.pfx
 .ssh/
 05-Security-Config/
 
-# AWS Credentials and Config
-.aws/
-aws-credentials*
-*credentials*
-*access-key*
-*secret*
-
-# Environment Variables and Secrets
+# Environment files
 .env
-.env.*
-secrets/
-config/secrets/
+*.env
+production.env
 
-# Discord Webhook Configurations (NEVER commit webhook URLs!)
+# API Keys
 discord_config.json
-**/discord_config.json
-webhook_urls.*
-discord_webhooks.*
-*webhook*config*
+*_api_key*
 
-# Backup SSH Keys
-.ssh-backup/
-
-# Log Files (may contain sensitive data)
+# Logs
 *.log
-logs/
 var/log/
 
-# Temporary Files
-*.tmp
-*.temp
-*~
-.DS_Store
-Thumbs.db
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
 
-# IDE and Editor Files
-.vscode/settings.json
-.vscode/launch.json
+# IDE
+.vscode/
 .idea/
 *.swp
 *.swo
 
-# Old/Legacy Files (not current implementation)
-local-honeypot-key.pem
-AWS_Key
-
-# Personal Notes and Drafts
-*draft*
-*notes*
-*personal*
-
-# Generated PlantUML Images
-*.png
-*.svg
-*.pdf
-
-# Compiled Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# OS Generated Files
-.DS_Store*
-ehthumbs.db
-Icon?
+# OS
+.DS_Store
 Thumbs.db
 
-# Backup Files
+# Temporary files
+*.tmp
 *.bak
 *.backup
-*~
-
-# Archive Files
-*.zip
-*.tar
-*.gz
-*.rar
-
-# Microsoft Office Temp Files
-~$*
+/tmp/

@@ -1,0 +1,155 @@
+@startuml honeypot-threat-sequence-troll
+title Honeypot Threat Intelligence Pipeline with Ultimate Troll Agent
+
+skinparam FontColor #232F3E
+skinparam BorderColor #FF9900
+skinparam ArrowColor #232F3E
+skinparam SequenceActorBorderColor #FF9900
+skinparam SequenceActorBackgroundColor #FFF5E6
+skinparam SequenceLifeLineBackgroundColor #E8F4F8
+skinparam SequenceParticipantBorderColor #FF9900
+skinparam SequenceParticipantBackgroundColor #FFF5E6
+
+actor Attacker as "🎯 Threat Actor"
+participant Honeypot as "Honeypot\n(Port 2222)"
+participant Recording as "Session\nRecorder"
+participant TrollResponder as "Troll Response\nEngine"
+participant TrollAgent as "Ultimate Troll\nAgent"
+participant Events as "Event\nClassifier"
+participant Filtering as "IP\nFilter"
+participant GreyNoise as "GreyNoise\nThreat API"
+participant EnhancedDiscord as "Enhanced Discord\nMonitor"
+participant Discord as "Discord\nIntegration"
+actor Team as "👥 Team\nMonitors"
+
+group "1. Attack Phase & Troll Engagement"
+    Attacker --> Honeypot: SSH connect\n(44.218.220.47:2222)
+    activate Honeypot
+    Honeypot --> Honeypot: Load config\n(Hardened settings)
+    Honeypot --> Recording: Initialize\nsession
+    activate Recording
+    Attacker --> Honeypot: Execute commands\n(whoami, id, cat /etc/passwd)
+    Honeypot --> Recording: Capture session\nevents
+    
+    par Parallel: Threat Analysis & Troll Engagement
+        Recording --> Events: Create event objects
+        Recording --> TrollResponder: Forward session data
+    end
+    
+    activate TrollResponder
+    TrollResponder --> TrollAgent: Request engagement\nfor attacker
+    activate TrollAgent
+    TrollAgent --> TrollAgent: Select persona\n(Philosophy, Riddles, Dad Jokes,\nConspiracy, Fortune, Motivation)
+    TrollAgent --> TrollResponder: Generate response\n(Comedy, time-wasting hooks)
+    deactivate TrollAgent
+    TrollResponder --> Honeypot: Deliver troll response\nto attacker terminal
+    Honeypot --> Attacker: 😈 Troll engagement\n(keeps them entertained)
+    deactivate Honeypot
+    note right of TrollResponder
+        Ultimate Troll Agent Tactics:
+        • 6 Comedy Personas
+        • 10+ Time-Wasting Tactics
+        • Escalating Engagement
+        • 100% Response Rate
+        • Conversation Hooks
+        • Attacker Retention Focus
+    end note
+end
+
+group "2. Event Processing & Classification"
+    activate Events
+    Events --> Events: Classify event types:\n- login.success\n- login.failed\n- command.input\n- **troll_engagement_sent**\n- **time_wasted_minutes**
+    deactivate Recording
+end
+
+group "3. IP Filtering & Threat Enrichment"
+    Events --> Filtering: Check IP\nagainst whitelist
+    activate Filtering
+    Filtering --> Filtering: Evaluate threat score
+    Filtering --> GreyNoise: Request threat\nintelligence
+    activate GreyNoise
+    GreyNoise --> GreyNoise: Query threat database
+    GreyNoise --> Filtering: Return threat\nmetadata
+    deactivate Filtering
+    deactivate GreyNoise
+    note right of Filtering
+        IP Classification:
+        - Team IPs: Suppressed
+        - Known malicious: High priority
+        - Unknown: Standard priority
+        + Troll engagement logged
+    end note
+end
+
+group "4. Threat Scoring & Troll Metrics"
+    Events --> GreyNoise: Enrich event with\nthreat score
+    TrollResponder --> EnhancedDiscord: Report troll metrics\n(time wasted, persona used,\nengagement level)
+    activate EnhancedDiscord
+    note right of TrollResponder
+        Engagement Metrics:
+        • Time wasted: X minutes
+        • Persona selected
+        • Response count: 100% rate
+        • Attacker interest level
+        • Escalation progress
+        • Next engagement hook
+    end note
+end
+
+group "5. Alert Generation & Delivery"
+    Events --> Discord: Format comprehensive\nalert message
+    activate Discord
+    EnhancedDiscord --> Discord: Add troll metrics\nto Discord notification
+    
+    alt High-Priority Threat + Active Engagement
+        Discord --> Discord: Flag: 🔴 CRITICAL + 😈 TROLLING
+        Discord --> Team: Send webhook alert\nwith threat + troll engagement
+    else Medium Priority + Troll Active
+        Discord --> Discord: Flag: 🟡 WARNING + 😈 TROLLING
+        Discord --> Team: Send webhook alert
+    else Low Priority + Troll Fun
+        Discord --> Discord: Flag: 🟢 INFO + 😈 TROLLING
+        Discord --> Team: Send webhook alert
+    end
+    
+    activate Team
+    Team --> Team: Review threat + troll\nengagement metrics
+    Team --> Team: Monitor attacker\nretention time
+    deactivate Team
+end
+
+group "6. Monitoring & CloudWatch Archive"
+    Events --> Events: Archive all events
+    Recording --> Events: Upload to\nCloudWatch Logs
+    deactivate Events
+    note right of Events
+        CloudWatch Integration:
+        - Real-time log aggregation
+        - Searchable event history
+        - **Troll engagement metrics**
+        - **Attacker time-waste minutes**
+        - Metrics collection
+        - Long-term retention
+    end note
+end
+
+note over Attacker, Team
+    Ultimate Troll Agent Flow:
+    Attack → Engagement Logic → Persona Selection → 
+    Comedy Response Delivery → Time-Wasting → Metrics Logging → 
+    Discord Alert with Troll Stats → Team Monitoring → CloudWatch Archive
+end note
+
+note right of Honeypot
+    Hardened Configuration + Troll:
+    • SSH timeout: 600s
+    • Key algorithms: Optimized
+    • JSON logging: Enabled
+    • Discord plugin: Active
+    • Threat intelligence: Integrated
+    • **Ultimate Troll Agent: DEPLOYED ✅**
+    • **6 Personas Active**
+    • **100% Response Rate**
+end note
+
+@enduml
