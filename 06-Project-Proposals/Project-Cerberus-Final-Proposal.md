@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-We're building "Project Cerberus" - a next-level AI-powered honeypot network that doesn't just catch attackers, it learns from them. This isn't your typical honeypot setup. We're integrating GPT-4 for real-time threat analysis while keeping the AI restricted to SOC/IR guidance so the team gets hands-on CLI experience.
+We're building "PatriotPot Deception Framework" - a next-level AI-powered honeypot network that doesn't just catch attackers, it learns from them. This isn't your typical honeypot setup. We're integrating GPT-4 for real-time threat analysis while keeping the AI restricted to SOC/IR guidance so the team gets hands-on CLI experience.
 
 **Project Duration**: 8-10 weeks  
 **Team Size**: 4 members  
@@ -206,7 +206,7 @@ We're building "Project Cerberus" - a next-level AI-powered honeypot network tha
 
 ## Conclusion
 
-Project Cerberus represents the future of cybersecurity education - combining traditional hands-on skills with responsible AI integration. Our team will gain experience with both cutting-edge AI tools and fundamental CLI operations, preparing us for the evolving cybersecurity landscape.
+PatriotPot represents the future of cybersecurity education - combining traditional hands-on skills with responsible AI integration. Our team will gain experience with both cutting-edge AI tools and fundamental CLI operations, preparing us for the evolving cybersecurity landscape.
 
 This isn't just about catching hackers anymore. It's about learning how humans and AI can work together to defend against cyber threats while maintaining the critical thinking and technical skills that make great cybersecurity professionals.
 

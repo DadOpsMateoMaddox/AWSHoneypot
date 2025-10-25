@@ -1,9 +1,9 @@
-# AWS Honeypot Project - CerberusMesh Deception Framework
+# AWS Honeypot Project - PatriotPot Deception Framework
 **George Mason University - AIT670 Cloud Computing - Fall 2025**
 
 ## Project Overview
 
-CerberusMesh is an enterprise-grade deception framework implementing a Cowrie SSH honeypot with advanced threat intelligence capabilities. Deployed on AWS EC2 infrastructure, this system demonstrates production-level cloud security implementation, real-time threat analysis, and automated attack attribution.
+PatriotPot is an enterprise-grade deception framework implementing a Cowrie SSH honeypot with advanced threat intelligence capabilities. Deployed on AWS EC2 infrastructure, this system demonstrates production-level cloud security implementation, real-time threat analysis, and automated attack attribution.
 
 ### Core Capabilities
 
@@ -280,7 +280,7 @@ Current monthly cost: ~$15
 ---
 
 **George Mason University - AIT670 Cloud Computing**  
-**CerberusMesh Deception Framework**  
+**PatriotPot Deception Framework**  
 **Last Updated: October 24, 2025**
 
 This project demonstrates enterprise-grade cloud security implementation, advanced threat intelligence capabilities, and professional team collaboration suitable for academic evaluation and industry portfolio presentation.
