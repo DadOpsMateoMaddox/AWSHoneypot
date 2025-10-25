@@ -3,252 +3,284 @@
 
 ## Project Overview
 
-CerberusMesh is a comprehensive multi-tier deception framework implementing a Cowrie SSH honeypot deployed on AWS EC2 infrastructure. This collaborative project demonstrates advanced cloud security concepts, threat detection, and cybersecurity research methodologies for academic evaluation and operational learning.
+CerberusMesh is an enterprise-grade deception framework implementing a Cowrie SSH honeypot with advanced threat intelligence capabilities. Deployed on AWS EC2 infrastructure, this system demonstrates production-level cloud security implementation, real-time threat analysis, and automated attack attribution.
 
-### Research Objectives
+### Core Capabilities
 
-- **Threat Intelligence Gathering**: Capture and analyze real-world attack patterns, techniques, and threat actor methodologies
-- **Security Research**: Conduct systematic analysis of attacker behavior, exploitation techniques, and post-exploitation activities
-- **Cloud Security Implementation**: Demonstrate AWS security best practices including IAM, security groups, and network isolation
-- **Academic Learning**: Develop hands-on expertise in honeypot technologies, threat analysis, and cloud infrastructure
-- **Team Collaboration**: Execute coordinated multi-member project delivery with documented processes and shared responsibility
+- **Advanced Threat Intelligence**: Multi-API enrichment pipeline with GreyNoise, Shodan, and AbuseIPDB integration
+- **MITRE ATT&CK Mapping**: Automated classification of attacker techniques and tactics
+- **Behavioral Analytics**: Real-time fingerprinting to distinguish automated scanners from human operators
+- **Geospatial Analysis**: Daily heatmap generation showing global attacker distribution
+- **Lambda Enrichment Pipeline**: Decoupled, fault-tolerant threat intelligence processing
 
-### Technical Architecture
+### Technical Stack
 
-- **Platform**: AWS EC2 (Amazon Linux 2) in us-east-1a region
-- **Honeypot**: Cowrie v2.5.0 SSH/Telnet deception service on port 2222
-- **Infrastructure**: Terraform and CloudFormation-based Infrastructure as Code
-- **Monitoring**: Comprehensive JSON-based event logging with real-time Discord webhook integration
-- **Threat Intelligence**: GreyNoise API threat scoring integration with IP-based alert filtering
+- **Platform**: AWS EC2 (Amazon Linux 2) - us-east-1a
+- **Honeypot**: Cowrie v2.5.0 SSH/Telnet emulation
+- **Infrastructure**: Terraform/CloudFormation IaC
+- **Enrichment**: AWS Lambda + SNS + S3
+- **Monitoring**: Enhanced Discord webhooks with verbose threat intelligence
+- **APIs**: GreyNoise Research, Shodan, AbuseIPDB (optional)
 
-## Team Collaboration
+## Architecture
 
-This project represents collaborative effort by the GMU AIT670 Cloud Computing cohort with distributed responsibilities and coordinated execution.
+### Infrastructure Components
 
-### Team Structure
+**EC2 Instance**
+- Instance ID: i-04d996c187504b547
+- Elastic IP: 44.218.220.47
+- Ports: 22 (admin), 2222 (honeypot)
+- VPC: 10.0.0.0/16 isolated network
 
-- **Infrastructure Leadership**: EC2 deployment, AWS credential management, and infrastructure maintenance
-- **Development Team**: Deployment automation, script development, and testing protocols
-- **Documentation**: Architecture diagrams, deployment guides, and operational procedures
-- **Security Analysis**: Threat pattern analysis, attack classification, and metrics collection
-- **Quality Assurance**: Validation testing, peer review, and production verification
+**Threat Intelligence Pipeline**
+```
+Cowrie Logs → Telemetry Enrichment → Behavioral Analytics → 
+MITRE Mapping → Lambda Enrichment → Discord Alerts + S3 Archive
+```
 
-### Team Responsibilities
+**Daily Automation**
+- Shodan heatmap generation (midnight UTC)
+- 60-day historical attacker geolocation
+- Automated Discord reporting
 
-- **Shared Infrastructure**: All authorized team members maintain read-only honeypot access through controlled credentials
-- **Coordinated Monitoring**: Distributed monitoring rotation for continuous observation and incident documentation
-- **Collaborative Analysis**: Joint threat intelligence review and attack pattern correlation
-- **Knowledge Transfer**: Cross-training on infrastructure operations and threat analysis methodologies
-- **Academic Deliverables**: Coordinated research documentation and presentation materials
+### Security Features
+
+**Honey Credentials**
+- Fake AWS credentials in filesystem
+- CloudTrail monitoring for usage attempts
+- Instant attacker attribution
+
+**Behavioral Fingerprinting**
+- Latency analysis (automated vs human)
+- TTY size tracking
+- Command timing patterns
+
+**MITRE ATT&CK Classification**
+- T1082: System Information Discovery
+- T1053: Scheduled Task/Job
+- T1560: Archive Collected Data
+- T1021: Remote Services
+- T1059: Command Interpreter
 
 ## Repository Structure
 
 ### 01-Project-Documentation
-
-Core research materials and technical architecture documentation:
-
-- Project overview and academic learning objectives
-- Team coordination procedures and access protocols
-- Deployment methodology documentation
-- AWS infrastructure collaboration workflows
-- PlantUML architecture diagrams detailing system design, threat flows, and deployment sequences
+Architecture diagrams, PlantUML sequences, deployment methodology
 
 ### 02-Deployment-Scripts
-
-Automated infrastructure provisioning and configuration management:
-
-- AWS security group creation and network isolation
-- Cowrie honeypot initialization and configuration deployment
-- System validation and health monitoring automation
-- IP whitelist management for alert filtering
-- Discord webhook integration and event processing
+- `behavioral_analytics.py` - MITRE ATT&CK mapping
+- `telemetry_enrichment.py` - Attacker fingerprinting
+- `honey_credentials.py` - Fake credential traps
+- `shodan_heatmap_generator.py` - Geospatial visualization
+- `enhanced_discord_monitor.py` - Verbose threat alerts
 
 ### 03-Team-Tutorials
-
-Comprehensive operational documentation and team knowledge base:
-
-- Step-by-step access procedures for WSL and SSH environments
-- AWS Systems Manager Session Manager configuration
-- Team coordination protocols and incident procedures
-- Troubleshooting guides for common operational issues
-- Advanced topics including docker-based deployments and infrastructure scaling
+Operational guides, access procedures, troubleshooting
 
 ### 04-AWS-Infrastructure
-
-Infrastructure as Code and cloud resource documentation:
-
-- CloudFormation and Terraform templates for stack deployment
-- VPC, security group, and network configuration specifications
-- IAM role definitions and least-privilege access policies
-- EC2 instance configuration and monitoring settings
+- `lambda_enrichment_handler.py` - Serverless enrichment
+- `LAMBDA-DEPLOYMENT.md` - Complete deployment guide
+- CloudFormation/Terraform templates
 
 ### 05-Security-Config
-
-Security configurations and credential management (repository excluded):
-
-- SSH private key material for EC2 access
-- Security configuration files and access controls
-- Encrypted credentials and webhook tokens
-- Note: All sensitive materials excluded via comprehensive .gitignore policies
+SSH keys, credentials (excluded from repository)
 
 ### 06-Project-Proposals
+Academic documentation, research methodology
 
-Academic planning and final project documentation:
+## Quick Start
 
-- Initial project proposals and scope definitions
-- Research methodology and learning outcomes
-- Final project analysis and results
-- Presentation materials for academic and technical review
+### Team Member Access
 
-## Quick Start Guide
+```bash
+# Clone repository
+git clone https://github.com/DadOpsMateoMaddox/AWSHoneypot.git
+cd AWSHoneypot
 
-### For Team Members
+# Connect to honeypot
+ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47
 
-1. Review: 03-Team-Tutorials/beginner-team-tutorial.md
-2. Setup: Configure WSL and SSH access per tutorial guidelines
-3. Access: Request SSH credentials through project leadership
-4. Deploy: Use scripts in 02-Deployment-Scripts/ for infrastructure automation
-5. Operate: Deploy infrastructure using 04-AWS-Infrastructure/ templates
+# View live attacks
+sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.json | jq .
+```
 
-### For Educators and Academic Reviewers
+### Deploy Advanced Features
 
-1. Architecture: Review PlantUML diagrams in 01-Project-Documentation/
-2. Implementation: Examine deployment scripts and infrastructure code
-3. Documentation: Review project proposals and academic methodology
-4. Coordination: Observe team collaboration protocols and documentation systems
+```bash
+# Deploy behavioral analytics
+cd 02-Deployment-Scripts
+sudo python3 behavioral_analytics.py
 
-## Current Implementation Status
+# Deploy honey credentials
+sudo python3 honey_credentials.py
 
-### Fully Operational Components
+# Deploy Shodan heatmaps
+chmod +x deploy-shodan-heatmap.sh
+./deploy-shodan-heatmap.sh
+```
 
-- **Cowrie Honeypot**: v2.5.0 SSH/Telnet service operating on port 2222
-- **Fake Filesystem**: Realistic directory structure with believable decoy files and accounts
-- **Event Logging**: Complete JSON-based session recording and command capture
-- **Team Access**: Multi-member administrative SSH access with coordination protocols
-- **Automated Deployment**: Infrastructure provisioning via deployment scripts and Terraform
-- **Documentation**: Complete architecture diagrams and operational procedures
+## Current Implementation
 
-### Active Monitoring
+### Operational Systems
 
-- **Real-time Threat Detection**: Continuous monitoring of attacker interactions and activities
-- **Session Analysis**: Detailed forensic examination of command execution and behavior patterns
-- **Team Coordination**: Shared monitoring responsibilities with incident documentation
-- **Academic Research**: Continuous data collection for cybersecurity analysis and threat intelligence
+**Core Honeypot**
+- Cowrie v2.5.0 with hardened configuration
+- Realistic filesystem with decoy files
+- Multi-user credential store
+- Complete session recording
 
-## Live Environment Details
+**Threat Intelligence**
+- GreyNoise API integration (active)
+- Shodan geolocation (active)
+- AbuseIPDB scoring (optional)
+- MITRE ATT&CK auto-mapping
 
-### EC2 Infrastructure
-
-- **Instance Type**: Amazon Linux 2 (t3 general purpose)
-- **Instance ID**: i-04d996c187504b547
-- **Region**: us-east-1a
-- **Elastic IP**: 44.218.220.47
-- **SSH Port**: 22 (administrative access)
-- **Honeypot Port**: 2222 (public-facing deception service)
-- **Security**: Isolated VPC with restrictive security group policies
+**Automation**
+- Daily heatmap generation
+- Real-time Discord alerts
+- Behavioral fingerprinting
+- Lambda enrichment pipeline (ready to deploy)
 
 ### Monitoring Capabilities
 
-- **Session Recording**: Complete logging of attacker interactions with command history
-- **Command Capture**: All executed commands, input parameters, and attempted operations
-- **Network Analysis**: Source IP classification, geographic analysis, and threat scoring
-- **Threat Intelligence**: Real-time attack pattern identification and integration with external threat feeds
+**Real-Time Analysis**
+- Command execution tracking
+- Attack phase classification
+- Threat level scoring
+- Geographic attribution
 
-## Security and Ethics
+**Historical Analysis**
+- 60-day attacker trends
+- Top countries/cities
+- Attack pattern evolution
+- Malware sample collection
 
-### Critical Security Protocols
+## Advanced Features
 
-- **Credential Management**: All SSH keys and webhook tokens excluded from repository via .gitignore
-- **Change Control**: All infrastructure modifications require team notification and approval
-- **Access Control**: Least-privilege SSH access with key-based authentication only
-- **Data Privacy**: Attacker data handled according to academic research ethics standards
-- **Network Isolation**: Honeypot completely isolated from production systems and internal networks
+### Lambda Enrichment Pipeline
+
+Decoupled threat intelligence processing:
+- SNS topic for event streaming
+- Lambda function for API enrichment
+- S3 immutable log archival
+- Fault-tolerant design
+
+**Benefits**
+- API outages don't block alerts
+- Async processing with retry logic
+- Cost: ~$1/month for 1M events
+
+### Behavioral Analytics
+
+Automated attacker classification:
+- Reconnaissance phase detection
+- Persistence attempt identification
+- Data exfiltration tracking
+- Lateral movement monitoring
+
+### Honey Credentials
+
+Attribution traps:
+- Fake AWS credentials
+- Fake SSH keys
+- Fake database credentials
+- CloudTrail monitoring
+
+## Security & Ethics
+
+### Security Protocols
+
+- Credential management via .gitignore
+- Least-privilege IAM policies
+- Network isolation (VPC)
+- Key-based authentication only
+- Immutable S3 logging
 
 ### Ethical Guidelines
 
-- **Research Purpose**: All data collection conducted for legitimate cybersecurity research only
-- **Defensive Posture**: Purely observational and defensive implementation; no offensive operations
-- **Academic Integrity**: Full compliance with GMU academic research standards and IRB policies
-- **Shared Accountability**: Collective team responsibility for ethical project conduct and data handling
+- Research purpose only
+- Defensive posture (no offensive operations)
+- Academic integrity compliance
+- Data privacy standards
+- Shared team accountability
 
-## Operational Procedures
+## Team Collaboration
 
-### Communication Standards
+### Communication
 
-- **Infrastructure Changes**: Minimum 24-hour advance notification to all team members
-- **Monitoring Rotation**: Coordinated 24/7 observation schedule with documented handoff procedures
-- **Incident Reporting**: Immediate notification of significant attack patterns or security events
-- **Documentation Updates**: Collaborative maintenance of operational procedures and findings
+- 24-hour notice for infrastructure changes
+- Coordinated monitoring rotation
+- Immediate incident reporting
+- Collaborative documentation
 
 ### Technical Coordination
 
-- **Version Control**: Git-based collaboration for all scripts, configurations, and documentation
-- **Code Review**: Peer review required for all deployment scripts before production deployment
-- **Testing Protocol**: Comprehensive validation in staging environment before production changes
-- **Knowledge Transfer**: Cross-training sessions and documented procedures for operational tasks
+- Git-based version control
+- Peer code review required
+- Staging environment testing
+- Cross-training sessions
 
-## Infrastructure Details
+## Performance Metrics
 
-### AWS Configuration
+### Current Statistics
 
-- **VPC**: 10.0.0.0/16 with public subnet configuration
-- **Security Group**: Restrictive ingress rules allowing only SSH (22) and Honeypot (2222)
-- **IAM Roles**: Service roles with CloudWatch and Systems Manager permissions
-- **Systems Manager**: Session Manager enabled for console-based shell access
+- Unique attackers: 11 (60-day period)
+- Geographic coverage: 6 countries
+- Attack phases detected: 5 MITRE techniques
+- Total events logged: 669
 
-### Honeypot Configuration
+### API Integration Status
 
-- **Cowrie Service**: SSH/Telnet emulation on port 2222
-- **Credential Store**: Multiple fake user accounts with varied privilege levels
-- **Filesystem**: Fake directory structure with decoy configuration files and credentials
-- **Event Schema**: JSON-based logging with structured event types and metadata
-- **Alert Integration**: Discord webhook for real-time event notification
-- **IP Filtering**: Whitelist-based suppression of internal team IPs during testing
+| API | Status | Purpose |
+|-----|--------|---------|
+| GreyNoise Research | Active | IP reputation |
+| Shodan | Active | Geolocation |
+| Discord Webhook | Active | Real-time alerts |
+| AbuseIPDB | Optional | Additional scoring |
 
 ## Future Enhancements
 
 ### Planned Improvements
 
-- **Multi-Protocol Support**: HTTP, FTP, and Telnet honeypot services
-- **Advanced Analytics**: Machine learning-based attack pattern classification and anomaly detection
-- **Scalable Architecture**: Multi-region deployment with load balancing and failover
-- **Enhanced Monitoring**: Real-time dashboard, metrics collection, and alert aggregation
-- **Threat Intelligence**: Integration with additional threat feeds and attribution systems
+- Multi-protocol honeypots (HTTP, FTP, Telnet)
+- Machine learning attack classification
+- Multi-region deployment
+- Grafana dashboard
+- GuardDuty threat list integration
+- Weekly Lambda summary reports
 
-## Learning Outcomes
+### Cost Optimization
 
-### Technical Competencies Developed
+Current monthly cost: ~$15
+- EC2 instance: $10
+- Lambda enrichment: $1
+- S3 storage: $2
+- API calls: $2
 
-- Cloud security architecture and AWS best practices
-- Real-world threat analysis and attack attribution
-- Infrastructure as Code development and deployment
-- Log analysis and forensic investigation techniques
-- Team collaboration in security operations environment
-
-### Project Recognition
-
-This project demonstrates advanced cloud computing concepts, systematic threat analysis methodologies, and professional-grade team collaboration suitable for academic evaluation and career portfolio development.
-
----
-
-## Support and Documentation
+## Documentation
 
 ### For Team Members
 
-- **Technical Issues**: Contact project leadership for system troubleshooting and access problems
-- **Access**: Request SSH credentials through secure channels with proper authorization
-- **Documentation**: Refer to 03-Team-Tutorials/ for comprehensive operational guides
+- Access procedures: `03-Team-Tutorials/`
+- Deployment guides: `02-Deployment-Scripts/`
+- Architecture diagrams: `01-Project-Documentation/`
 
 ### For Academic Review
 
-- **Project Details**: Complete technical documentation available in repository
-- **Implementation**: Architecture diagrams and deployment code in 01-Project-Documentation/ and 02-Deployment-Scripts/
-- **Coordination**: Team procedures and collaboration protocols documented throughout repository
+- Project proposals: `06-Project-Proposals/`
+- Technical implementation: Complete repository
+- Research methodology: Documented throughout
+
+## Support
+
+**Technical Issues**: Contact project leadership
+**Access Requests**: Secure credential distribution
+**Documentation**: Comprehensive guides in repository
 
 ---
 
-**George Mason University - AIT670 Cloud Computing**
-**CerberusMesh Deception Framework - Team Collaborative Project**
-**Last Updated: October 23, 2025**
+**George Mason University - AIT670 Cloud Computing**  
+**CerberusMesh Deception Framework**  
+**Last Updated: October 24, 2025**
 
-This project represents the collaborative efforts of the GMU AIT670 team, demonstrating advanced cloud security implementation, systematic threat analysis capabilities, and professional-grade project coordination.
+This project demonstrates enterprise-grade cloud security implementation, advanced threat intelligence capabilities, and professional team collaboration suitable for academic evaluation and industry portfolio presentation.

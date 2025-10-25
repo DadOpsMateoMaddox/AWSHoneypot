@@ -1,0 +1,108 @@
+@startuml Discord-AI-Response-Integration
+title Discord Alert Flow with AI Troll Responses
+
+skinparam sequence {
+    ArrowColor #FF9900
+    ActorBorderColor #232F3E
+    LifeLineBorderColor #232F3E
+    ParticipantBorderColor #232F3E
+    ParticipantBackgroundColor #FFFFFF
+}
+
+participant "Attacker" as attacker
+participant "Cowrie\nHoneypot" as cowrie
+participant "Troll\nEngine" as troll
+participant "Event\nLogger" as logger
+participant "Enhanced\nDiscord Monitor" as monitor
+participant "Discord\nWebhook" as webhook
+participant "Team\nDiscord" as team
+
+== Traditional Honeypot Alert (Before) ==
+attacker -> cowrie: whoami
+cowrie -> logger: Log command event
+logger -> monitor: Read: "cowrie.command.input"
+monitor -> webhook: Send generic alert\n(command only)
+webhook -> team: Alert: "whoami executed"
+note right of team
+    ❌ Team sees only:
+    - IP address
+    - Command executed
+    - No context
+    - No engagement info
+end note
+
+== Enhanced: AI Response Integration (After) ==
+
+attacker -> cowrie: whoami
+activate cowrie
+
+cowrie -> troll: Route to AI engine
+activate troll
+
+troll -> troll: Select persona\n(Philosophy Bot)
+troll -> troll: Generate response:\n"But what IS identity?"
+troll -> cowrie: Return response
+
+cowrie -> attacker: Send response\n(appears as output)
+deactivate troll
+
+cowrie -> logger: Log BOTH:\n1. Command\n2. AI Response
+activate logger
+
+logger -> logger: Create event:\neventid: "cowrie.troll.response"\nwith response text
+
+deactivate logger
+
+logger -> monitor: File has new JSON entry
+activate monitor
+
+monitor -> monitor: Extract:\n- command: "whoami"\n- persona: "philosophy"\n- response: "But what IS..."\n- time_wasted: 420 sec
+
+deactivate monitor
+
+monitor -> webhook: Format rich embed:\n✅ Command\n✅ AI Response\n✅ Persona used\n✅ Time metrics
+
+activate webhook
+
+webhook -> webhook: POST to Discord\nwith all enriched data
+
+deactivate webhook
+
+webhook -> team: 🎯 Formatted Alert
+
+activate team
+
+note right of team
+    ✅ Team sees EVERYTHING:
+    - IP + Geolocation
+    - Attacker's command
+    - EXACT AI response sent
+    - Persona used
+    - Time wasted estimate
+    - Engagement effectiveness
+    - Attacker reactions
+end note
+
+deactivate team
+
+== Session Summary After Engagement ==
+
+cowrie -> logger: Session closed\neventid: "cowrie.session.closed"\nwith engagement metrics
+
+logger -> monitor: Aggregate session data:\n- Total responses: 23\n- Success rate: 85%\n- Personas used: 3\n- Total time: 47 min
+
+monitor -> webhook: Format session summary embed
+
+webhook -> team: 📊 Complete Session Report\nwith all AI metrics
+
+note right of team
+    📊 Session Summary shows:
+    - Total responses sent
+    - Engagement success rate
+    - Personas effectiveness
+    - Time wasted per attacker
+    - Frustration indicators
+    - Attack escalation level
+end note
+
+@enduml
