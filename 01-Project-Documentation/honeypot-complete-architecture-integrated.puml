@@ -118,24 +118,18 @@ Events --> Filtering : Apply IP whitelist
 Filtering --> GeoIntel : Extract location data
 GeoIntel --> Heatmap : Generate heatmap
 
-' === AI Troll Engagement Pipeline ===
-Recording --> TrollResponder : Forward session data
-TrollResponder --> TrollIntegration : Send for processing
-TrollIntegration --> TrollAgent : Request engagement
-TrollAgent --> TrollResponder : Generate response
-TrollResponder --> Honeypot : Deliver to attacker
-TrollResponder --> EnhancedDiscord : Log metrics
+
 
 ' === Threat Intelligence Pipeline ===
 Events --> GreyNoise : Score threat level
 Filtering --> GreyNoise : Attach IP/location
 GreyNoise --> Discord : Enrich alert data
 GeoIntel --> Dashboard : Update heatmap
-EnhancedDiscord --> Discord : Send engagement stats
+
 
 ' === Discord Notifications ===
 Discord --> DiscordWebhook : Threat alerts
-EnhancedDiscord --> DiscordWebhook : Troll metrics
+
 Dashboard --> DiscordWebhook : Periodic reports
 
 ' === Monitoring & Logging ===
@@ -178,15 +172,7 @@ Attack capture
 Threat emulation
 end note
 
-note right of TrollAgent
-ULTIMATE TROLL AGENT
-6 Personas deployed
-100% response rate
-10+ engagement tactics
-Time-wasting focus
-Attacker retention
-Academic research
-end note
+
 
 note right of Events
 EVENT CLASSIFICATION
@@ -194,8 +180,7 @@ authentication (success/fail)
 command execution
 file operations
 network connections
-troll engagement
-time-waste minutes
+
 end note
 
 note right of Dashboard
@@ -205,7 +190,7 @@ Geographic distribution
 Origin clustering
 Attack frequency
 Threat actor profiling
-Troll engagement stats
+
 end note
 
 note bottom of GeoIntel
