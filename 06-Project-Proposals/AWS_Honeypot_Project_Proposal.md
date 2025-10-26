@@ -1,11 +1,11 @@
 # AWS Honeypot Network Project Proposal
-**CerberusMesh: A Multi-Tier Deception Framework**
+**Patriot PotMesh: A Multi-Tier Deception Framework**
 
 ---
 
 ## **Executive Summary**
 
-We propose to design and implement "CerberusMesh" - a scalable AWS-based honeypot network that simulates realistic enterprise infrastructure to attract, detect, and analyze cyber threats. This project will provide hands-on experience with cloud security, threat intelligence, and incident response while creating a memorable learning experience for all team members regardless of their AWS background.
+We propose to design and implement "Patriot PotMesh" - a scalable AWS-based honeypot network that simulates realistic enterprise infrastructure to attract, detect, and analyze cyber threats. This project will provide hands-on experience with cloud security, threat intelligence, and incident response while creating a memorable learning experience for all team members regardless of their AWS background.
 
 **Project Duration**: 8-10 weeks  
 **Team Size**: 4 members  
@@ -229,7 +229,7 @@ We propose to design and implement "CerberusMesh" - a scalable AWS-based honeypo
 
 ## **Conclusion**
 
-CerberusMesh represents an ideal balance of technical challenge and educational accessibility. By assigning roles based on complexity and interest, every team member will gain valuable AWS and cybersecurity experience while contributing to a professional-quality project.
+Patriot PotMesh represents an ideal balance of technical challenge and educational accessibility. By assigning roles based on complexity and interest, every team member will gain valuable AWS and cybersecurity experience while contributing to a professional-quality project.
 
 This honeypot network will not only demonstrate our technical capabilities but also provide each team member with a memorable, portfolio-worthy experience that showcases real-world cybersecurity skills to future employers.
 

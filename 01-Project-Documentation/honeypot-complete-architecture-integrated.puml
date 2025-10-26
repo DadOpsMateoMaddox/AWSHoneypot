@@ -22,19 +22,13 @@ package "AWS Cloud Region: us-east-1a" #e8f4f8 {
                 
                 component "Session Recording\nJSON-formatted events\n/opt/cowrie/var/log/\ncowrie.json\nComplete audit trail" as Recording
                 
-                component "Troll Response Engine\nAI-driven engagement\nResponse generation\n100% response rate\nPersona selection" as TrollResponder
+
             }
 
-            package "AI Engagement Engine" #ffccdd {
-                component "Ultimate Troll Agent\n/opt/cowrie/ai-agent/\nultimate_troll_agent.py\n6 Comedy Personas\nPhilosophy Bot\nRiddle Master\nDad Jokes Engine\nConspiracy Theorist\nFortune Teller\nMotivational Speaker" as TrollAgent
-                
-                component "Troll Integration\ntroll_integration.py\n10+ Time-Wasting Tactics\nConversation Hooks\nEscalating Engagement\nAttacker Retention\nPerformance Metrics" as TrollIntegration
-                
-                component "Enhanced Discord Monitor\nenhanced_discord_monitor.py\nReal-time troll responses\nEngagement metrics\nTime-waste tracking\nPersona statistics" as EnhancedDiscord
-            }
+
 
             package "Event Processing & Analysis" #ffeecc {
-                component "Event Classification\nAuthentication attempts\nCommand input capture\nFile operations logging\nNetwork connections\nSession lifecycle events\nTroll engagement events\nTime-waste minutes" as Events
+                component "Event Classification\nAuthentication attempts\nCommand input capture\nFile operations logging\nNetwork connections\nSession lifecycle events" as Events
                 
                 component "IP Filtering & Whitelist\n/opt/cowrie/ip_whitelist.py\nTeam IP suppression\nThreat classification\nGeographic tagging\nAttacker profiling" as Filtering
                 
@@ -46,7 +40,7 @@ package "AWS Cloud Region: us-east-1a" #e8f4f8 {
                 
                 component "Discord Webhook Integration\ndiscord_config.json\nWebhook endpoint\nAlert formatting\nReal-time notifications\nTeam coordination" as Discord
                 
-                component "Threat Intelligence Dashboard\nAttacker heatmaps\nGeographic distribution\nAttack statistics\nPersona performance\nTime-waste metrics" as Dashboard
+                component "Threat Intelligence Dashboard\nAttacker heatmaps\nGeographic distribution\nAttack statistics\nThreat analysis" as Dashboard
             }
 
             package "System Access & Management" #eeffee {
@@ -58,7 +52,7 @@ package "AWS Cloud Region: us-east-1a" #e8f4f8 {
             package "Monitoring & Observability" #ffffee {
                 component "CloudWatch Logs\nLog aggregation\nJSON log streaming\nCowrie event storage\nLong-term retention\nSearchable archive" as CloudWatch
                 
-                component "CloudWatch Metrics\nAttack frequency\nAuthentication attempts\nSession duration\nTroll engagement depth\nAttacker retention rates" as Metrics
+                component "CloudWatch Metrics\nAttack frequency\nAuthentication attempts\nSession duration\nThreat patterns" as Metrics
                 
                 component "CloudWatch Alarms\nHigh-threat detection\nAnomaly alerting\nThreshold monitoring\nAutomated notifications" as Alarms
             }
@@ -75,7 +69,7 @@ package "Geographic & Threat Intelligence" #ffffee {
 }
 
 package "External Integrations" #ffcccc {
-    component "Discord Webhook\nReal-time alerts\nTroll engagement notifications\nAttack notifications\nTeam notifications\nCustom formatting" as DiscordWebhook
+    component "Discord Webhook\nReal-time alerts\nAttack notifications\nTeam notifications\nCustom formatting" as DiscordWebhook
     
     component "GitHub Repository\nDadOpsMateoMaddox/AWSHoneypot\nDeployment automation\nInfrastructure code\nDocumentation\nVersion control" as GitHub
     
