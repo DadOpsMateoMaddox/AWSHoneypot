@@ -92,6 +92,12 @@ Academic documentation, research methodology
 
 ### Team Member Access
 
+**Option 1: VS Code Remote-SSH (Recommended)**
+- Full IDE experience with integrated terminal
+- See [VSCODE-QUICK-START.md](VSCODE-QUICK-START.md) for 5-minute setup
+- Comprehensive guide: [03-Team-Tutorials/vscode-connection-guide.md](03-Team-Tutorials/vscode-connection-guide.md)
+
+**Option 2: Traditional SSH**
 ```bash
 # Clone repository
 git clone https://github.com/DadOpsMateoMaddox/AWSHoneypot.git
@@ -99,6 +105,9 @@ cd AWSHoneypot
 
 # Connect to honeypot
 ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47
+
+# Set up environment variables
+bash 02-Deployment-Scripts/setup_honeypot_env.sh
 
 # View live attacks
 sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.json | jq .

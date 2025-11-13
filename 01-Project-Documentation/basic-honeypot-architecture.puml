@@ -1,0 +1,56 @@
+@startuml Basic Honeypot Architecture
+
+!define AWSPUML https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v14.0/dist
+!include AWSPUML/AWSCommon.puml
+!include AWSPUML/Compute/EC2.puml
+!include AWSPUML/NetworkingContentDelivery/VPC.puml
+!include AWSPUML/SecurityIdentityCompliance/IAM.puml
+
+skinparam backgroundColor #2a3439
+skinparam defaultFontColor #00ff00
+
+actor "Attacker" as attacker #ff0000
+cloud "Internet" as internet #ff0000
+
+rectangle "AWS us-east-1" {
+    rectangle "VPC 10.0.0.0/16" as vpc {
+        rectangle "EC2 Instance\ni-04d996c187504b547\nAmazon Linux 2" as ec2 {
+            component "SSH (Port 22)" as ssh22 #green
+            component "Cowrie (Port 2222)" as cowrie #orange
+            database "JSON Logs" as logs
+        }
+    }
+}
+
+cloud "Threat Intel APIs" as apis {
+    component "GreyNoise VIP" as greynoise
+    component "Shodan" as shodan
+}
+
+component "Discord Webhook" as discord
+
+attacker -[#ff0000]-> internet : <color:#ff0000>Scans for vulnerable SSH</color>
+internet -[#ff0000]-> cowrie : <color:#ff0000>Connects to port 2222</color>
+cowrie --> logs : Records all activity
+logs --> greynoise : IP reputation lookup
+logs --> shodan : Geolocation lookup
+logs --> discord : Real-time alerts
+
+note right of ssh22
+  Admin access only
+  Key-based auth
+end note
+
+note right of cowrie
+  Fake SSH honeypot
+  Emulates vulnerable system
+  Logs all commands
+end note
+
+note bottom of logs
+  /opt/cowrie/var/log/cowrie/cowrie.json
+  43 unique attackers
+  669 total events
+end note
+
+@enduml

@@ -1,8 +1,27 @@
 # Team Access Tutorial: GMU Honeypot EC2 Instance
 
+> **💡 New**: For the best development experience, we recommend using VS Code Remote-SSH!  
+> See [vscode-connection-guide.md](vscode-connection-guide.md) or [VSCODE-QUICK-START.md](../VSCODE-QUICK-START.md)
+
+## Connection Options
+
+**Option 1: VS Code Remote-SSH (Recommended)** 
+- Full IDE experience directly on the EC2 instance
+- Integrated terminal, file explorer, and editing
+- Pre-configured tasks for common operations
+- See: [vscode-connection-guide.md](vscode-connection-guide.md)
+
+**Option 2: WSL2 + Traditional SSH (This Guide)**
+- Command-line access via Windows Subsystem for Linux
+- Good for quick checks and automated scripts
+- Lighter weight than VS Code
+
+---
+
+## WSL2 Setup Instructions
+
 ## Prerequisites
 - Windows 10/11 with WSL2 installed
-- VS Code with Remote-WSL extension
 - Basic terminal/SSH knowledge
 
 ## Step 1: Install WSL2 (if not already installed)
@@ -15,7 +34,7 @@ wsl --install
 ## Step 2: Get the SSH Key
 **Team Leader will provide:**
 - File: `gmu-honeypot-key.pem`
-- EC2 IP: `44.222.200.1`
+- EC2 IP: `44.218.220.47`
 
 **Save the key file to your WSL home directory:**
 ```bash
@@ -28,48 +47,106 @@ chmod 400 ~/.ssh/gmu-honeypot-key.pem
 ## Step 3: Test Connection
 ```bash
 # Test SSH connection
-ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1
+ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47
 
 # If successful, you'll see:
 # [ec2-user@ip-172-31-21-182 ~]$
 ```
 
-## Step 4: Create Convenient Alias
-Add to your `~/.bashrc`:
+## Step 4: Set Up Environment Variables
+
+After connecting, run the environment setup script:
+
+```bash
+# Clone the repository (if not done already)
+cd ~
+git clone https://github.com/DadOpsMateoMaddox/AWSHoneypot.git
+cd AWSHoneypot
+
+# Run the setup script
+bash 02-Deployment-Scripts/setup_honeypot_env.sh
+```
+
+This sets up:
+- Environment variables (HONEYPOT_USER, HONEYPOT_IP, LOCAL_ARCHIVE_DIR, etc.)
+- Helpful aliases (cowrie-status, cowrie-logs, etc.)
+- Helper functions (honeypot-info, create-archive, etc.)
+
+## Step 5: Create Convenient Alias (Optional)
+Add to your `~/.bashrc` in WSL for quick access:
 ```bash
 # Edit bashrc
 nano ~/.bashrc
 
 # Add this line at the end:
-alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.222.200.1'
+alias ec2='ssh -i ~/.ssh/gmu-honeypot-key.pem ec2-user@44.218.220.47'
 
 # Save and reload
 source ~/.bashrc
 ```
 
-## Step 5: Quick Access
+## Step 6: Quick Access
 Now you can connect with just:
 ```bash
 ec2
 ```
 
-## Common Commands on EC2
+## Using Environment Variables
+
+After running the setup script (Step 4), you have access to:
+
 ```bash
-# Check Cowrie status
+# Environment variables
+echo $HONEYPOT_USER        # ec2-user
+echo $HONEYPOT_IP          # 44.218.220.47
+echo $LOCAL_ARCHIVE_DIR    # ~/cowrie_archives
+echo $COWRIE_LOG_DIR       # /opt/cowrie/var/log/cowrie
+
+# Helper aliases
+cowrie-status      # Check Cowrie status
+cowrie-logs        # View live logs with jq formatting
+cowrie-start       # Start Cowrie
+cowrie-stop        # Stop Cowrie
+
+# Analysis functions
+honeypot-info      # Show honeypot dashboard
+count-events       # Count events by type
+recent-attackers   # Show recent attacker IPs
+create-archive     # Pull and archive all logs
+
+# Navigation
+cd-logs            # Jump to log directory
+cd-scripts         # Jump to scripts directory
+cd-archives        # Jump to archive directory
+```
+
+## Common Manual Commands
+
+```bash
+# Check Cowrie status (manual)
 sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py status
 
-# View Cowrie logs
+# View Cowrie logs (raw)
 sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.log
 
 # Test honeypot (from another terminal)
-ssh -p 2222 root@44.222.200.1
+ssh -p 2222 root@44.218.220.47
 
-# Stop/Start Cowrie
-sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py stop
-sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py start
+# Pull and archive logs
+cd ~/AWSHoneypot/02-Deployment-Scripts
+sudo ./pull_and_archive_cowrie_logs.sh --convert-pcap
 ```
 
 ## Troubleshooting
+
+**Environment Variables Not Set:**
+```bash
+# Manually load environment
+source ~/.honeypot_env
+
+# Or re-run setup
+bash ~/AWSHoneypot/02-Deployment-Scripts/setup_honeypot_env.sh
+```
 
 **Permission Denied Error:**
 ```bash
