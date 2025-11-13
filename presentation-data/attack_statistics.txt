@@ -1,0 +1,12 @@
+=== PatriotPot Attack Statistics ===
+Total Events: 131
+Unique Attackers: 4
+Login Attempts: 19
+Commands Executed: 8
+File Downloads: 4
+
+=== Top 10 Attacking Countries ===
+     74 173.249.50.59
+     43 165.22.217.96
+     10 151.44.219.212
+      4 98.244.93.121
