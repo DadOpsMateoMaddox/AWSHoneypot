@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "View Live Cowrie Logs",
+      "type": "shell",
+      "command": "sudo tail -f /opt/cowrie/var/log/cowrie/cowrie.json | jq .",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Check Cowrie Status",
+      "type": "shell",
+      "command": "sudo -u cowrie python3.10 /opt/cowrie/src/cowrie/scripts/cowrie.py status",
+      "problemMatcher": []
+    },
+    {
+      "label": "Pull and Archive Logs",
+      "type": "shell",
+      "command": "bash ${workspaceFolder}/02-Deployment-Scripts/pull_and_archive_cowrie_logs.sh --convert-pcap",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Test Honeypot Connection",
+      "type": "shell",
+      "command": "ssh -p 2222 root@44.218.220.47",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "View Behavioral Analytics",
+      "type": "shell",
+      "command": "sudo python3 ${workspaceFolder}/02-Deployment-Scripts/behavioral_analytics.py",
+      "problemMatcher": []
+    }
+  ]
+}

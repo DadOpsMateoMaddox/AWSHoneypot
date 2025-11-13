@@ -1,0 +1,24 @@
+{
+  "remote.SSH.defaultExtensions": [
+    "ms-python.python",
+    "ms-vscode.cpptools",
+    "redhat.vscode-yaml"
+  ],
+  "remote.SSH.showLoginTerminal": true,
+  "remote.SSH.remotePlatform": {
+    "44.218.220.47": "linux"
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/tmp/**": true,
+    "**/opt/cowrie/var/log/**": true
+  },
+  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "terminal.integrated.env.linux": {
+    "HONEYPOT_USER": "ec2-user",
+    "HONEYPOT_IP": "44.218.220.47",
+    "COWRIE_LOG_DIR": "/opt/cowrie/var/log/cowrie"
+  }
+}
