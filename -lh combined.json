@@ -1,0 +1,10 @@
+[33m6bece19[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Add PCAP conversion tools for presentation analysis
+[33m19847a6[m Clean up project: Remove outdated UML diagrams and remaining AI troll references
+[33m75f0662[m Remove remaining AI troll references from integrated architecture diagram
+[33m734b868[m Remove AI troll components from UML diagrams - not feasible for implementation
+[33m9a9561f[m Rebrand: Replace CerberusMesh with PatriotPot Deception Framework
+[33m8d79fa0[m Remove AI troll agent documentation and references - feature not implemented
+[33mf04b1b6[m Major infrastructure upgrade: Lambda enrichment, MITRE mapping, Shodan heatmaps
+[33m20a2d63[m Update Shodan heatmap to 60-day lookback
+[33m63c2539[m Add Shodan API integration for daily heatmaps
+[33m5730089[m Lambda Enrichment Pipeline + MITRE Mapping + Directory Cleanup
